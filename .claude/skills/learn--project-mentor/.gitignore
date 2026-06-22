@@ -1,0 +1,20 @@
+# Local Claude settings (contains user-specific paths)
+.claude/settings.local.json
+
+# Design documents (not for public repo)
+project-mentor-design-doc.md
+project-mentor-design-v2.md
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*~
