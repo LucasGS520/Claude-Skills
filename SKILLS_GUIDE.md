@@ -9,7 +9,8 @@
 ## Sumário
 
 - [Como as Skills Funcionam](#como-as-skills-funcionam)
-- [ai-- → IA, Agentes & Dados](#ai----ia-agentes--dados)
+- [ai-- → IA & Agentes](#ai----ia--agentes)
+- [data-- → Análise & Dados](#data----análise--dados)
 - [arch-- → Arquitetura & Infraestrutura](#arch----arquitetura--infraestrutura)
 - [db-- → Banco de Dados](#db----banco-de-dados)
 - [dev-- → Qualidade & Processo](#dev----qualidade--processo)
@@ -42,7 +43,7 @@
 
 ---
 
-## ai-- → IA, Agentes & Dados
+## ai-- → IA & Agentes
 
 ### `ai--agno` Fonte idiomática oficial
 **O que é:** Skill oficial do framework Agno — referência canônica para padrões idiomáticos, APIs e boas práticas ao construir agentes, times, workflows e integrações MCP com o Agno SDK.
@@ -71,7 +72,7 @@
 - Usar `output_schema` (Pydantic) para saídas estruturadas — nunca parsear texto livre
 - Métodos `async` têm prefixo `a` (`aprint_response`, `arun`, etc.)
 
-**Sinergia com:** `ai--prompt-engineer` (conteúdo dos system prompts) + `ai--agent-development` (estrutura do agente no Claude Code) + `ai--python-pro` (código Python idiomático)
+**Sinergia com:** `ai--prompt-engineer` (conteúdo dos system prompts) + `ai--agent-development` (estrutura do agente no Claude Code) + `dev--python-pro` (código Python idiomático)
 
 ---
 
@@ -91,31 +92,21 @@
 
 ---
 
-### `ai--python-pro`
-**O que é:** Especialista em Python 3.11+ moderno com foco em qualidade, type safety e práticas de engenharia robustas.
+### `ai--multi-agent-architect`
+**O que é:** Arquiteto de sistemas multi-agente — planeja, define e especifica arquiteturas de camadas de agentes antes de qualquer código ser escrito.
 
 **Responsabilidades:**
-- Código Python com type annotations completas
-- Configuração de mypy em strict mode
-- Async/await com asyncio e padrões corretos
-- Testes com pytest (fixtures, mocking, parametrize)
-- Linting com black e ruff
-- Dataclasses, Pydantic models, dependency injection
-- Logging estruturado e error handling
+- Justificar quando multi-agente é realmente necessário vs. agente único com mais ferramentas
+- Definir fronteiras e responsabilidade única de cada agente (input/output contracts)
+- Escolher o tipo de arquitetura (Pipeline, Supervisor, Paralelo, Hierárquico, Debate)
+- Projetar o modelo de comunicação entre agentes (message-passing, shared memory, event-driven)
+- Especificar sistemas de memória e propriedade do estado compartilhado
+- Mapear anti-patterns estruturais a evitar (ciclos, sobreposição de responsabilidade, orchestrator executando trabalho de domínio)
+- Produzir especificação arquitetural completa antes da implementação
 
----
+**Diferença de `ai--agno`:** `ai--multi-agent-architect` decide **como estruturar** o sistema (topologia, coordenação, fronteiras). `ai--agno` sabe **como implementar** com o framework Agno. Use `multi-agent-architect` primeiro para o design, depois `ai--agno` para o código.
 
-### `ai--pandas-pro`
-**O que é:** Especialista em análise e manipulação de dados com pandas DataFrames.
-
-**Responsabilidades:**
-- Join de DataFrames em múltiplas chaves
-- Pivot tables e reshaping de dados
-- Resample e análise de séries temporais
-- Handling de NaN (interpolação, forward-fill)
-- GroupBy com aggregações complexas
-- Conversão de tipos e validação de dados
-- Otimização de performance em datasets grandes
+**Sinergia:** `ai--multi-agent-architect` → `ai--agno` → `ai--agent-development` + `ai--prompt-engineer`
 
 ---
 
@@ -132,20 +123,6 @@
 
 ---
 
-### `ai--monitoring-expert`
-**O que é:** Especialista em observabilidade — logging, métricas, tracing e performance.
-
-**Responsabilidades:**
-- Configurar Prometheus + Grafana
-- Implementar logging estruturado (JSON logs)
-- Criar dashboards de monitoramento
-- Definir alertas e SLOs
-- Distributed tracing
-- Load testing com k6 ou Artillery
-- Profiling de CPU e memória
-
----
-
 ### `ai--prompt-engineer`
 **O que é:** Especialista em escrever, refatorar e avaliar prompts para LLMs.
 
@@ -159,6 +136,39 @@
 - Reduzir tokens mantendo qualidade
 
 **Sinergia com:** `ai--agent-development` — use `ai--prompt-engineer` para o conteúdo do prompt, depois `ai--agent-development` para estruturar o agente.
+
+---
+
+## data-- → Análise & Dados
+
+> Diferença de `db--`: `data--` é sobre **análise, manipulação e narrativa de dados** (pandas, relatórios, insights). `db--` é sobre **banco de dados** (SQL, schema, performance de queries).
+
+### `data--pandas-pro`
+**O que é:** Especialista em análise e manipulação de dados com pandas DataFrames.
+
+**Responsabilidades:**
+- Join de DataFrames em múltiplas chaves
+- Pivot tables e reshaping de dados
+- Resample e análise de séries temporais
+- Handling de NaN (interpolação, forward-fill)
+- GroupBy com aggregações complexas
+- Conversão de tipos e validação de dados
+- Otimização de performance em datasets grandes
+
+---
+
+### `data--storyteller`
+**O que é:** Transforma dados brutos em relatórios narrativos com insights automáticos.
+
+**Responsabilidades:**
+- Processar CSV e Excel
+- Auto-detectar padrões nos dados
+- Gerar resumo executivo em linguagem natural
+- Criar visualizações e gráficos
+- Análise estatística automática
+- Exportar para PDF
+
+**Sinergia:** `data--pandas-pro` processa os dados → `data--storyteller` transforma em narrativa.
 
 ---
 
@@ -217,6 +227,23 @@
 
 ---
 
+### `arch--monitoring-expert`
+**O que é:** Especialista em observabilidade de infraestrutura — logging, métricas, tracing e performance.
+
+**Responsabilidades:**
+- Configurar Prometheus + Grafana
+- Implementar logging estruturado (JSON logs)
+- Criar dashboards de monitoramento (RED/USE methods)
+- Definir alertas e SLOs
+- Distributed tracing com OpenTelemetry
+- Load testing com k6 ou Artillery
+- Profiling de CPU e memória
+- Capacity planning
+
+**Sinergia com:** `arch--devops-engineer` (infra e deploy) + `dev--debugging-wizard` (investigação de problemas em produção).
+
+---
+
 ## db-- → Banco de Dados
 
 ### `db--postgres-pro`
@@ -264,6 +291,20 @@
 ---
 
 ## dev-- → Qualidade & Processo
+
+### `dev--python-pro`
+**O que é:** Especialista em Python 3.11+ moderno com foco em qualidade, type safety e práticas de engenharia robustas.
+
+**Responsabilidades:**
+- Código Python com type annotations completas
+- Configuração de mypy em strict mode
+- Async/await com asyncio e padrões corretos
+- Testes com pytest (fixtures, mocking, parametrize)
+- Linting com black e ruff
+- Dataclasses, Pydantic models, dependency injection
+- Logging estruturado e error handling
+
+---
 
 ### `dev--debugging-wizard`
 **O que é:** Investigador técnico de bugs — foca em análise ativa de evidências.
@@ -355,19 +396,18 @@
 
 ---
 
-### `dev--feature-forge`
-**O que é:** Workshop de requisitos — transforma ideias em especificações formais.
+### `dev--security-auditor`
+**O que é:** Auditor de segurança de dependências npm/Node.js.
 
 **Responsabilidades:**
-- Conduzir workshops estruturados de requisitos
-- Escrever user stories no formato correto
-- EARS format (Event-driven, Attribute-driven, etc.)
-- Acceptance criteria objetivos e testáveis
-- Implementation checklists
-- PRDs (Product Requirements Documents)
-- Matrizes de requisitos
+- Executar `npm audit --json` e parsear o output
+- Classificar CVEs por severidade (Critical → Low)
+- Distinguir dependências diretas de transitivas
+- Gerar relatório markdown com comandos de remediação
+- Suporte a `security-exceptions.json` para riscos aceitos
+- CI-friendly com exit codes corretos
 
-**Sinergia:** `dev--feature-forge` → `arch--api-designer` → implementação.
+**Sinergia:** Use junto de `dev--security-reviewer` (auditoria do código) + `dev--secure-code-guardian` (implementa correções). O trio cobre o ciclo completo de segurança.
 
 ---
 
@@ -456,19 +496,6 @@
 
 ---
 
-### `learn--project-planner`
-**O que é:** Planejador de projetos gerais — não técnico, focado em gestão.
-
-**Responsabilidades:**
-- Definir metas e milestones
-- Criar roadmaps e timelines
-- OKRs e SMART goals
-- Gantt charts
-- Planejamento de recursos
-- Avaliação de riscos
-
----
-
 ## product-- → Produto & Análise
 
 ### `product--product-discovery`
@@ -494,31 +521,34 @@
 
 ---
 
-### `product--data-storyteller`
-**O que é:** Transforma dados brutos em relatórios narrativos com insights automáticos.
+### `product--feature-forge`
+**O que é:** Workshop de requisitos — transforma ideias em especificações formais de produto.
 
 **Responsabilidades:**
-- Processar CSV e Excel
-- Auto-detectar padrões nos dados
-- Gerar resumo executivo em linguagem natural
-- Criar visualizações e gráficos
-- Análise estatística automática
-- Exportar para PDF
+- Conduzir workshops estruturados de requisitos
+- Escrever user stories no formato correto
+- EARS format (Event-driven, Attribute-driven, etc.)
+- Acceptance criteria objetivos e testáveis
+- Implementation checklists
+- PRDs (Product Requirements Documents)
+- Matrizes de requisitos
 
-**Sinergia:** `ai--pandas-pro` processa os dados → `product--data-storyteller` transforma em narrativa.
+**Sinergia:** `product--product-discovery` → `product--feature-forge` → `arch--api-designer` → implementação.
 
 ---
 
-### `product--security-auditor`
-**O que é:** Auditor de segurança de dependências npm/Node.js.
+### `product--project-planner`
+**O que é:** Planejador de projetos gerais — não técnico, focado em gestão e estratégia.
 
 **Responsabilidades:**
-- Executar `npm audit --json` e parsear o output
-- Classificar CVEs por severidade (Critical → Low)
-- Distinguir dependências diretas de transitivas
-- Gerar relatório markdown com comandos de remediação
-- Suporte a `security-exceptions.json` para riscos aceitos
-- CI-friendly com exit codes corretos
+- Definir metas e milestones (SMART goals, OKRs)
+- Criar roadmaps e timelines
+- Gantt charts
+- Planejamento de recursos
+- Avaliação de riscos e contingências
+- Planos para negócios, eventos, projetos acadêmicos e pessoais
+
+**Diferença de `superpowers:writing-plans`:** `writing-plans` planeja **implementação técnica** de software. `product--project-planner` planeja **projetos gerais** (não técnicos).
 
 ---
 
@@ -559,7 +589,7 @@
 ### Feature Nova (do zero ao PR)
 ```
 product--product-discovery    → vale construir?
-dev--feature-forge            → user story + acceptance criteria
+product--feature-forge        → user story + acceptance criteria
 arch--api-designer            → contrato da API
 [brainstorming]               → (automático) explora design
 writing-plans                 → (automático) plano de implementação
@@ -592,12 +622,12 @@ playwright-expert (projeto)      → testes E2E
 
 ### Qualidade antes de Merge
 ```
-dev--code-reviewer       → revisão ampla
-dev--security-reviewer   → auditoria de segurança
+dev--code-reviewer        → revisão ampla
+dev--security-reviewer    → auditoria de segurança
 dev--secure-code-guardian → implementa correções
-product--security-auditor → dependências npm
-dev--code-refactoring    → refatora pontos problemáticos
-code-simplifier (agente) → simplifica resultado
+dev--security-auditor     → dependências npm
+dev--code-refactoring     → refatora pontos problemáticos
+code-simplifier (agente)  → simplifica resultado
 ```
 
 ### Banco de Dados com Performance
@@ -614,7 +644,7 @@ ai--multi-agent-architect → quando for um time de agentes: taxonomia, padrões
 ai--agno                  → padrões idiomáticos do framework (API, estrutura, regras)
 ai--prompt-engineer       → escreve o system prompt
 ai--agent-development     → estrutura o agente no Claude Code (frontmatter, tools)
-ai--python-pro            → implementa a lógica Python
+dev--python-pro           → implementa a lógica Python
 ai--rag-architect         → se o agente precisar buscar contexto no pgvector
 dev--test-master          → testes do agente
 ```
@@ -625,13 +655,15 @@ dev--test-master          → testes do agente
 
 | Situação | Skill(s) |
 |---|---|
-| Criar feature nova | `brainstorming` → `dev--feature-forge` → `writing-plans` |
+| Criar feature nova | `brainstorming` → `product--feature-forge` → `writing-plans` |
 | Bug apareceu | `systematic-debugging` → `dev--debugging-wizard` |
 | Review de PR | `code-review:code-review --comment` |
 | Review local | `dev--code-reviewer` |
 | Segurança antes de subir | `dev--security-reviewer` → `dev--secure-code-guardian` |
+| Auditoria npm | `dev--security-auditor` |
 | Nova tela UI | `frontend-design` → `frontend--ui-ux-expert` |
 | TypeScript complexo | `frontend--typescript-pro` |
+| Python moderno | `dev--python-pro` |
 | Query lenta | `db--database-optimizer` + `db--sql-pro` |
 | Criar agentes | `ai--agent-development` + `ai--prompt-engineer` |
 | Criar agente com Agno (único) | `ai--agno` → `ai--prompt-engineer` + `ai--agent-development` |
@@ -643,11 +675,10 @@ dev--test-master          → testes do agente
 | Pronto para commitar | `verification-before-completion` (automático) |
 | Criar PR | `requesting-code-review` → `finishing-a-development-branch` |
 | Recebeu feedback de review | `receiving-code-review` |
-| Dados → relatório | `ai--pandas-pro` → `product--data-storyteller` |
-| Auditoria npm | `product--security-auditor` |
+| Dados → relatório | `data--pandas-pro` → `data--storyteller` |
 | Deploy / Docker | `arch--devops-engineer` |
-| Monitoring / Observabilidade | `ai--monitoring-expert` |
+| Monitoring / Observabilidade | `arch--monitoring-expert` |
 | Refatorar código ruim | `dev--code-refactoring` |
 | Simplificação pontual | `code-simplifier` (agente) |
-| Planejar roadmap do projeto | `learn--project-planner` |
+| Planejar roadmap do projeto | `product--project-planner` |
 | Validar antes de construir | `product--product-discovery` |
