@@ -500,7 +500,33 @@
 
 ## tools-- → Ferramentas & Exploração
 
-### `tools--tools--graphify`
+### `tools--caveman` Sistema de compressão de output
+**O que é:** Modo ultra-comprimido — reduz output em ~65% usando linguagem caveman enquanto preserva precisão técnica completa.
+
+**Responsabilidades:**
+- 6 níveis de intensidade: lite, full (padrão), ultra, wenyan-lite, wenyan-full, wenyan-ultra
+- Dropa artigos, preenchimento, pleasantries, hedging
+- Mantém código, símbolos, strings de erro, URLs exatos
+- Auto-clareza: desativa para warnings de segurança, ações irreversíveis, sequências ambíguas
+
+**Quando usar:**
+- Sessões longas quando token limit crítico
+- Batch edits múltiplos arquivos
+- Feedback denso de code review sem ruído
+
+**Skills relacionadas:**
+- `tools--caveman-commit` — commit messages terse (≤50 chars)
+- `tools--caveman-review` — PR feedback comprimido (1 linha por achado)
+- `tools--caveman-compress` — comprime CLAUDE.md, todos, preferences
+- `tools--caveman-help` — referência rápida de comandos
+- `tools--caveman-stats` — token usage real da sessão
+- `tools--cavecrew` — delega para subagentes comprimidos
+
+**Ativação:** Automática via hook SessionStart. Manual com `/caveman` ou "caveman mode". Desativa com "stop caveman".
+
+---
+
+### `tools--graphify`
 **O que é:** Transforma qualquer pasta de arquivos em grafo de conhecimento navegável com detecção de comunidades, auditoria de mudanças e três saídas: HTML interativo, JSON pronto para GraphRAG e relatório legível em Markdown.
 
 **Propósito central:** Responder perguntas sobre a arquitetura e relacionamentos de arquivos de um codebase — especialmente quando `tools--graphify-out/` existe, questões devem ser tratadas como queries do tools--graphify primeiro.
@@ -644,43 +670,6 @@ tools--graphify <caminho> --no-viz                       # JSON + report, pula v
 
 ---
 
-## Caveman — Sistema de Compressão de Output
-
-> **Status:** ✅ Instalado globalmente em `~/.claude/skills/caveman/` + **cópia no repositório** em `.claude/skills/caveman/`
-> **Ativação:** Automática via hook SessionStart. Manual com `/caveman` ou "caveman mode".
-> **Suporte:** 7 skills + 3 agentes cavecrew para delegação.
-
-Caveman é um **sistema integrado de compressão** que reduz output em ~65% mantendo precisão técnica. Funciona como um modo persistente que afeta todas as respostas.
-
-### Skills Caveman (7 no total)
-
-| Skill | Propósito |
-|---|---|
-| `caveman` | Modo persistente ultra-comprimido. Intensidades: lite/full/ultra + wenyan (chinês clássico). Ativa com `/caveman` ou "caveman mode" |
-| `caveman-commit` | Gerar commit messages terse em Conventional Commits. Subject ≤50 chars, body só quando necessário. `/caveman-commit` |
-| `caveman-review` | Code review comprimido — uma linha por achado: localização + problema + fix. `/caveman-review` |
-| `caveman-compress` | Comprime files de memória (CLAUDE.md, todos) em formato caveman. `/caveman-compress FILEPATH` |
-| `caveman-help` | Referência rápida de todos os modos e comandos caveman. `/caveman-help` |
-| `caveman-stats` | Token usage + savings estimados da sessão. Lê logs reais do Claude Code, não estimativas. `/caveman-stats` |
-| `cavecrew` | Agente delegador: decide quando spawnar `cavecrew-investigator`, `cavecrew-builder`, ou `cavecrew-reviewer`. Output comprimido (~60% menos tokens) |
-
-### Quando Usar Caveman
-
-- **Sessões longas** — combate token limit ao manter contexto técnico
-- **Code reviews** — feedback denso sem ruído
-- **Commit messages** — historia clara em espaço mínimo
-- **Batch edits** — múltiplos arquivos, linguagem comprimida
-- **Investigação de código** — via `cavecrew-investigator` em vez de `Explore` vanilla
-
-### Configuração
-
-Status atual:
-- Caveman está **ativo por padrão** nesta sessão (hook SessionStart)
-- Modo padrão: **full** (drop articles, fragments OK, sem narração de tool calls)
-- Para mudar: `/caveman lite|full|ultra`
-- Para desativar: "stop caveman" ou "normal mode"
-
----
 
 ## Skills Oficiais Anthropic (Superpowers)
 

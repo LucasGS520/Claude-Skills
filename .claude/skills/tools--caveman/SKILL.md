@@ -1,5 +1,5 @@
 ---
-name: caveman
+name: tools--caveman
 description: >
   Ultra-compressed communication mode. Cuts output tokens 65% (measured) by speaking like caveman
   while keeping full technical accuracy. Supports intensity levels: lite, full (default), ultra,
