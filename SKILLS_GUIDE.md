@@ -500,56 +500,56 @@
 
 ## tools-- → Ferramentas & Exploração
 
-### `graphify`
+### `tools--tools--graphify`
 **O que é:** Transforma qualquer pasta de arquivos em grafo de conhecimento navegável com detecção de comunidades, auditoria de mudanças e três saídas: HTML interativo, JSON pronto para GraphRAG e relatório legível em Markdown.
 
-**Propósito central:** Responder perguntas sobre a arquitetura e relacionamentos de arquivos de um codebase — especialmente quando `graphify-out/` existe, questões devem ser tratadas como queries do graphify primeiro.
+**Propósito central:** Responder perguntas sobre a arquitetura e relacionamentos de arquivos de um codebase — especialmente quando `tools--graphify-out/` existe, questões devem ser tratadas como queries do tools--graphify primeiro.
 
 **Responsabilidades:**
-- Gerar grafo de conhecimento persistente do codebase (`graphify-out/graph.json`)
+- Gerar grafo de conhecimento persistente do codebase (`tools--graphify-out/graph.json`)
 - Criar visualização interativa HTML com comunidades detectadas
 - Fornecer três ferramentas de query para exploração:
-  - `graphify query "<pergunta>"` — retorna subgrafo relevante
-  - `graphify path "<A>" "<B>"` — mostra relacionamentos entre conceitos
-  - `graphify explain "<conceito>"` — explica conceitos focados
+  - `tools--graphify query "<pergunta>"` — retorna subgrafo relevante
+  - `tools--graphify path "<A>" "<B>"` — mostra relacionamentos entre conceitos
+  - `tools--graphify explain "<conceito>"` — explica conceitos focados
 - Gerar `GRAPH_REPORT.md` com análise de arquitetura
-- Manter grafo atualizado com `graphify update .` (incremental, AST-only)
+- Manter grafo atualizado com `tools--graphify update .` (incremental, AST-only)
 - Suportar entrada múltipla (arquivos locais, GitHub repos, papers + código)
 
 **Quando usar:**
 1. **Entender arquitetura de um codebase** — use query/path/explain para navegação rápida
-2. **Responder perguntas técnicas sobre o projeto** — codebase questions → graphify query ANTES de grep/read bruto
+2. **Responder perguntas técnicas sobre o projeto** — codebase questions → tools--graphify query ANTES de grep/read bruto
 3. **Analisar relacionamentos entre módulos** — entender acoplamentos, dependências cruzadas, comunidades
 4. **Onboarding em repositório novo** — construir grafo, ler `GRAPH_REPORT.md`, depois codebase é navegável
-5. **Arquivos modificados recentemente** — `graphify update .` mantém o grafo sincronizado com mudanças de código
+5. **Arquivos modificados recentemente** — `tools--graphify update .` mantém o grafo sincronizado com mudanças de código
 
 **Como usar:**
 ```bash
 # Pipeline completo (gera HTML + JSON + GRAPH_REPORT.md)
-graphify                                           # codebase atual
-graphify <caminho>                                 # pasta específica
-graphify https://github.com/<owner>/<repo>        # clonar repo e processar
-graphify <repo1> <repo2> ...                       # múltiplos repos com merge
+tools--graphify                                           # codebase atual
+tools--graphify <caminho>                                 # pasta específica
+tools--graphify https://github.com/<owner>/<repo>        # clonar repo e processar
+tools--graphify <repo1> <repo2> ...                       # múltiplos repos com merge
 
 # Modos e opções
-graphify <caminho> --mode deep                    # extração richer com mais inferências
-graphify <caminho> --update                       # incremental - só novos/alterados
-graphify <caminho> --directed                     # grafo direcionado (preserva A→B)
-graphify <caminho> --cluster-only                 # reclusterizar grafo existente
-graphify <caminho> --no-viz                       # JSON + report, pula visualização
+tools--graphify <caminho> --mode deep                    # extração richer com mais inferências
+tools--graphify <caminho> --update                       # incremental - só novos/alterados
+tools--graphify <caminho> --directed                     # grafo direcionado (preserva A→B)
+tools--graphify <caminho> --cluster-only                 # reclusterizar grafo existente
+tools--graphify <caminho> --no-viz                       # JSON + report, pula visualização
 ```
 
 **Outputs:**
-- `graphify-out/` → diretório com todos os resultados
-- `graphify-out/index.html` → visualização interativa (abrir no browser)
-- `graphify-out/graph.json` → JSON para uso programático ou GraphRAG
-- `graphify-out/GRAPH_REPORT.md` → análise legível de arquitetura
-- `graphify-out/wiki/` → índice de navegação (se `--obsidian` usado)
+- `tools--graphify-out/` → diretório com todos os resultados
+- `tools--graphify-out/index.html` → visualização interativa (abrir no browser)
+- `tools--graphify-out/graph.json` → JSON para uso programático ou GraphRAG
+- `tools--graphify-out/GRAPH_REPORT.md` → análise legível de arquitetura
+- `tools--graphify-out/wiki/` → índice de navegação (se `--obsidian` usado)
 
 **Regras ao usar:**
-1. Se `graphify-out/graph.json` existe, sempre use `query/path/explain` para codebase questions ANTES de grep/read
-2. Se `graphify-out/wiki/index.md` existe, use para navegação ampla ao invés de browsar fonte bruto
-3. Após modificações de código, rodar `graphify update .` mantém o grafo consistente (AST-only, sem custo de API)
+1. Se `tools--graphify-out/graph.json` existe, sempre use `query/path/explain` para codebase questions ANTES de grep/read
+2. Se `tools--graphify-out/wiki/index.md` existe, use para navegação ampla ao invés de browsar fonte bruto
+3. Após modificações de código, rodar `tools--graphify update .` mantém o grafo consistente (AST-only, sem custo de API)
 4. Use `GRAPH_REPORT.md` para análise arquitetural ampla quando query/path/explain insuficientes
 
 **Sinergia com:** `learn--project-mentor` (understand project structure) + `learn--spec-miner` (reverse-engineer code) + `dev--code-reviewer` (entender impacto arquitetural de mudanças)
@@ -807,8 +807,8 @@ db--database-optimizer  → otimiza após EXPLAIN ANALYZE
 
 ### Exploração e Compreensão de Codebase
 ```
-graphify                   → gera grafo persistente + visualização
-graphify query/path/explain → navega o grafo para perguntas rápidas
+tools--graphify                   → gera grafo persistente + visualização
+tools--graphify query/path/explain → navega o grafo para perguntas rápidas
 learn--project-mentor      → onboarding estruturado do projeto
 learn--code-teacher        → entender blocos de código específicos
 learn--spec-miner          → reverse-engineer logic não documentada
@@ -862,9 +862,9 @@ dev--test-master          → testes do agente
 | Entender lib externa | `learn--project-mentor` |
 | Entender trecho de código | `learn--code-teacher` |
 | Código sem documentação | `learn--spec-miner` |
-| Pergunta sobre codebase | `graphify` (query/path/explain) |
-| Explorar arquitetura do projeto | `graphify query` (se graphify-out/ existir) |
-| Onboarding em novo repo | `graphify` → ler GRAPH_REPORT.md → `learn--project-mentor` |
+| Pergunta sobre codebase | `tools--graphify` (query/path/explain) |
+| Explorar arquitetura do projeto | `tools--graphify query` (se tools--graphify-out/ existir) |
+| Onboarding em novo repo | `tools--graphify` → ler GRAPH_REPORT.md → `learn--project-mentor` |
 | Escrever testes | `test-driven-development` + `dev--test-master` |
 | Pronto para commitar | `verification-before-completion` (automático) |
 | Criar PR | `requesting-code-review` → `finishing-a-development-branch` |
