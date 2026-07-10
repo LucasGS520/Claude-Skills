@@ -558,108 +558,33 @@ tools--graphify <caminho> --no-viz                       # JSON + report, pula v
 
 ## n8n-- → Automação N8N
 
-> Skills oficiais do n8n — fonte: [`n8n-io/skills`](https://github.com/n8n-io/skills)
-> Cobrem o ciclo completo de automação: design, configuração de nós, expressões, loops, agentes IA, erros, credenciais, debugging e deploy.
-> **Regra central:** invocar a skill correspondente **antes** de qualquer ação no n8n — o MCP do n8n evolui mais rápido do que o training cutoff de qualquer modelo.
+> Skills oficiais do n8n — fonte: [`n8n-io/skills`](https://github.com/n8n-io/skills). **Regra central:** invocar a skill correspondente **antes** de qualquer ação no n8n — o MCP do n8n evolui mais rápido que o training cutoff de qualquer modelo.
 
 ### `n8n--using-skills` Meta-skill roteadora
-**O que é:** Protocolo sempre ativo — carregado em toda sessão. Roteia para a skill correta, resume todas as ferramentas MCP do n8n e estabelece as regras transversais.
+**O que é:** Protocolo sempre ativo — roteia para a skill correta e estabelece regras transversais.
 
 **Regras não-negociáveis:**
-1. Invocar a skill relevante **antes** de qualquer ação n8n — não apenas chamadas MCP
-2. `validate_workflow` antes de publicar + `get_workflow_details` após criar/atualizar para verificar as `connections`
-3. Tokens e secrets **nunca** em campos de texto — sempre usar o sistema de credenciais do n8n
+1. Invocar skill relevante ANTES de qualquer ação n8n
+2. `validate_workflow` antes de publicar + `get_workflow_details` após criar/atualizar
+3. Tokens e secrets **nunca** em campos de texto — usar sistema de credenciais do n8n
 
----
+### Demais skills n8n
 
-### `n8n--workflow-lifecycle`
-**O que é:** Design, organização e publicação de workflows — do início ao deploy.
-
-**Responsabilidades:** layout visual (sticky notes), nomes de nós, validação, testes, pastas/projetos, publicação.
-
----
-
-### `n8n--node-configuration`
-**O que é:** Configuração correta de qualquer nó n8n — HTTP, webhooks, banco, Slack/Gmail, AI, triggers, Merge.
-
-**Responsabilidades:** parâmetros de nós, `useDataOfInput`, `numberOfInputs`, fan-in, debugging de nó específico.
-
----
-
-### `n8n--expressions`
-**O que é:** Escrita e revisão de expressões n8n (`{{...}}`), referências `$json`/`$node`, datas com Luxon.
-
-**Responsabilidades:** sintaxe de expressões, `$input`, `$node`, `DateTime`, formatação de datas, erros de expressão.
-
----
-
-### `n8n--subworkflows`
-**O que é:** Modularização — quando extrair lógica repetível em subworkflows.
-
-**Responsabilidades:** reuso de lógica, workflows com +10 nós, lógica compartilhada entre projetos.
-
----
-
-### `n8n--loops`
-**O que é:** Processamento de múltiplos itens — batches, APIs paginadas, rate limits, paralelismo.
-
-**Responsabilidades:** loop/iterate, "for each", batching, paginação, fan-out, concorrência, nó executado uma vez vs. uma vez por item.
-
----
-
-### `n8n--error-handling`
-**O que é:** Tratamento de erros em workflows de produção — webhooks, agendados, saídas de erro por nó.
-
-**Responsabilidades:** `onError`, `continueErrorOutput`, error workflows, try/catch, branches de erro, workflows não supervisionados.
-
----
-
-### `n8n--agents`
-**O que é:** Construção de features de IA no n8n — AI Agents, LLM chains, vector stores, embeddings, classificadores, extratores.
-
-**Responsabilidades:** nodes `@n8n/n8n-nodes-langchain.*`, tool calling, `fromAi`, system prompts, memória, structured output, RAG, geração de mídia com IA.
-
----
-
-### `n8n--credentials-and-security`
-**O que é:** Autenticação e segurança — API keys, OAuth, tokens, credenciais de terceiros.
-
-**Responsabilidades:** `Authorization header`, `x-api-key`, bearer tokens, OAuth, secrets — nunca em campos de texto.
-
----
-
-### `n8n--code-nodes`
-**O que é:** Nós de código JavaScript/Python no n8n — lógica customizada que não cabe em nós nativos.
-
-**Responsabilidades:** Code node, transformações com `$input`/`$json`, quando usar (e quando **não** usar) código.
-
----
-
-### `n8n--data-tables`
-**O que é:** Data Tables do n8n — schemas, inserção/upsert, deduplicação, estado persistente entre execuções.
-
-**Responsabilidades:** `n8n-nodes-base.dataTable`, idempotência, lookup, dedup, armazenamento cross-execução.
-
----
-
-### `n8n--binary-and-data`
-**O que é:** Arquivos, imagens, PDFs e dados binários em workflows n8n.
-
-**Responsabilidades:** upload/download de arquivos, chat trigger com arquivos, agente recebendo/retornando arquivo, visão/multimodal.
-
----
-
-### `n8n--debugging`
-**O que é:** Investigação de workflows com erro, output inesperado ou comportamento incorreto.
-
-**Responsabilidades:** erros de execução, "it's not working", output divergente, workflow parado, investigação de falha.
-
----
-
-### `n8n--extending-mcp`
-**O que é:** Expor workflows n8n como ferramentas MCP chamáveis pelo agente.
-
-**Responsabilidades:** wrapping de capacidades não nativas do MCP (folder/tag CRUD, metadata), expor workflows como tools para o agente.
+| Skill | Foco |
+|---|---|
+| `n8n--workflow-lifecycle` | Design, estrutura e publicação de workflows |
+| `n8n--node-configuration` | Config de nós (HTTP, webhooks, banco, Slack/Gmail, AI, triggers) |
+| `n8n--expressions` | Expressões `{{...}}`, referências `$json`/`$node`, Luxon |
+| `n8n--loops` | Processar múltiplos itens, batches, paginação, fan-out |
+| `n8n--subworkflows` | Modularização e reuso de lógica |
+| `n8n--error-handling` | Tratamento de erros, error workflows, try/catch |
+| `n8n--agents` | AI Agents, LLM chains, RAG, embeddings, structured output |
+| `n8n--credentials-and-security` | Autenticação, OAuth, API keys, secrets |
+| `n8n--code-nodes` | Code node JavaScript/Python, transformações com `$input`/`$json` |
+| `n8n--data-tables` | Data Tables, idempotência, dedup, estado cross-execução |
+| `n8n--binary-and-data` | Arquivos, PDFs, multimodal, upload/download |
+| `n8n--debugging` | Investigação de workflows com erro ou output inesperado |
+| `n8n--extending-mcp` | Expor workflows n8n como tools MCP para agentes |
 
 ---
 
