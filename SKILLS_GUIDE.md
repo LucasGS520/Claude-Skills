@@ -38,10 +38,12 @@
 
 **Localização das skills:**
 ```
-~/.claude/skills/          → suas 33 skills globais (qualquer projeto)
+~/.claude/skills/          → suas 55 skills globais locais (qualquer projeto)
 ~/.claude/plugins/cache/   → skills oficiais Anthropic (Superpowers, frontend-design, etc.)
 <projeto>/.claude/skills/  → skills específicas de cada projeto
 ```
+
+**Status GitHub:** o repositório público [`LucasGS520/Claude-Skills`](https://github.com/LucasGS520/Claude-Skills) rastreado por `origin/main` contém 47 skills com `SKILL.md`. Estas 8 skills existem localmente, mas ainda não estão em `origin/main`: `dev--security-auditor`, `tools--cavecrew`, `tools--caveman`, `tools--caveman-commit`, `tools--caveman-compress`, `tools--caveman-help`, `tools--caveman-review`, `tools--caveman-stats`.
 
 ---
 
@@ -411,6 +413,8 @@
 
 **Sinergia:** Use junto de `dev--security-reviewer` (auditoria do código) + `dev--secure-code-guardian` (implementa correções). O trio cobre o ciclo completo de segurança.
 
+**Status GitHub:** local-only por enquanto — não aparece em `origin/main`.
+
 ---
 
 ### `dev--fullstack-guardian`
@@ -514,15 +518,126 @@
 - Batch edits múltiplos arquivos
 - Feedback denso de code review sem ruído
 
-**Skills relacionadas:**
-- `tools--caveman-commit` — commit messages terse (≤50 chars)
-- `tools--caveman-review` — PR feedback comprimido (1 linha por achado)
-- `tools--caveman-compress` — comprime CLAUDE.md, todos, preferences
-- `tools--caveman-help` — referência rápida de comandos
-- `tools--caveman-stats` — token usage real da sessão
-- `tools--cavecrew` — delega para subagentes comprimidos
-
 **Ativação:** Automática via hook SessionStart. Manual com `/caveman` ou "caveman mode". Desativa com "stop caveman".
+
+**Status GitHub:** local-only por enquanto — não aparece em `origin/main`.
+
+---
+
+### `tools--cavecrew`
+**O que é:** Guia de decisão para delegar trabalho a subagentes com output comprimido no estilo Caveman, reduzindo o custo de contexto quando o resultado do subagente volta para a thread principal.
+
+**Responsabilidades:**
+- Decidir quando usar `cavecrew-investigator`, `cavecrew-builder` ou `cavecrew-reviewer`
+- Diferenciar cavecrew de agentes vanilla como `Explore` e `Code Reviewer`
+- Definir contratos de output curtos e previsíveis para investigação, edição e review
+- Orientar padrões de encadeamento: localizar → corrigir → revisar
+- Evitar uso indevido em refactors grandes, features multi-arquivo ou feedback que precisa de prosa
+
+**Quando usar:**
+- Investigar símbolos, chamadas, arquivos e pontos de uso com baixo custo de contexto
+- Fazer edição cirúrgica em até 2 arquivos já identificados
+- Revisar diff com achados objetivos, sem explicação longa
+- Economizar contexto em sessões longas com muita delegação
+
+**Status GitHub:** local-only por enquanto — não aparece em `origin/main`.
+
+---
+
+### `tools--caveman-commit`
+**O que é:** Gerador de mensagens de commit ultra-concisas em Conventional Commits.
+
+**Responsabilidades:**
+- Criar subject no formato `<type>(<scope>): <summary>`
+- Manter subject preferencialmente com até 50 caracteres
+- Escrever corpo só quando o motivo não é óbvio, há breaking change, migração, segurança ou revert
+- Evitar ruído como "this commit", atribuição a IA, emoji e repetição de nomes de arquivo
+- Produzir mensagem pronta em bloco de código, sem executar `git commit`
+
+**Quando usar:**
+- Escrever mensagem de commit
+- Gerar commit message a partir de diff staged/unstaged
+- Padronizar commits com `feat`, `fix`, `refactor`, `docs`, `test`, `chore`, etc.
+
+**Status GitHub:** local-only por enquanto — não aparece em `origin/main`.
+
+---
+
+### `tools--caveman-compress`
+**O que é:** Compressor de arquivos de memória/prosa (`CLAUDE.md`, todos, preferences, `.md`, `.txt`) para reduzir tokens preservando conteúdo técnico.
+
+**Responsabilidades:**
+- Comprimir texto natural removendo filler, hedging, redundância e pleasantries
+- Preservar exatamente code blocks, inline code, URLs, comandos, paths, números e frontmatter
+- Manter estrutura Markdown: headings, listas, tabelas e hierarquia
+- Criar backup human-readable como `<arquivo>.original.md`
+- Validar saída e evitar sobrescrever se a compressão falhar
+
+**Quando usar:**
+- Reduzir custo de contexto de arquivos de memória longos
+- Compactar documentação operacional repetitiva
+- Preparar `CLAUDE.md` ou preferências para sessões com limite de tokens apertado
+
+**Atenção:** não usar em código, JSON, YAML, TOML, `.env`, lockfiles, CSS, HTML, SQL ou shell scripts.
+
+**Status GitHub:** local-only por enquanto — não aparece em `origin/main`.
+
+---
+
+### `tools--caveman-help`
+**O que é:** Cartão de referência rápida dos modos, comandos e skills Caveman.
+
+**Responsabilidades:**
+- Exibir modos `lite`, `full`, `ultra`, `wenyan-lite`, `wenyan-full`, `wenyan-ultra`
+- Listar comandos `/caveman`, `/caveman-commit`, `/caveman-review`, `/caveman-compress`, `/caveman-help`
+- Explicar como desativar com "stop caveman" ou "normal mode"
+- Documentar configuração de modo padrão via `CAVEMAN_DEFAULT_MODE` ou `~/.config/caveman/config.json`
+
+**Quando usar:**
+- Lembrar os comandos disponíveis
+- Ver opções de intensidade
+- Descobrir como ativar, desativar ou configurar Caveman
+
+**Status GitHub:** local-only por enquanto — não aparece em `origin/main`.
+
+---
+
+### `tools--caveman-review`
+**O que é:** Formato de code review ultra-conciso: uma linha por achado com localização, problema e correção.
+
+**Responsabilidades:**
+- Produzir comentários no formato `L<linha>: <problema>. <fix>.`
+- Usar severidades opcionais: bug, risk, nit e q
+- Remover hedging e preâmbulos de review
+- Preservar símbolos, funções e variáveis exatos em backticks
+- Sair do modo terse quando segurança, arquitetura ou onboarding exigirem explicação completa
+
+**Quando usar:**
+- Revisar PR/diff com comentários prontos para colar
+- Gerar feedback objetivo e denso
+- Reduzir ruído em revisões repetitivas
+
+**Limite:** não aplica fixes, não aprova PR e não executa linters.
+
+**Status GitHub:** local-only por enquanto — não aparece em `origin/main`.
+
+---
+
+### `tools--caveman-stats`
+**O que é:** Skill acionada por hook para mostrar uso real de tokens e economia estimada da sessão atual.
+
+**Responsabilidades:**
+- Ler estatísticas reais do log de sessão do Claude Code
+- Exibir números via hook `caveman-mode-tracker`
+- Bloquear a resposta do modelo e mostrar o resultado calculado pelo hook
+- Evitar estimativa manual pelo LLM
+
+**Quando usar:**
+- Rodar `/caveman-stats`
+- Verificar economia de tokens durante uma sessão longa
+- Auditar impacto real do modo Caveman
+
+**Status GitHub:** local-only por enquanto — não aparece em `origin/main`.
 
 ---
 
@@ -611,6 +726,186 @@ tools--graphify <caminho> --no-viz                       # JSON + report, pula v
 | `n8n--binary-and-data` | Arquivos, PDFs, multimodal, upload/download |
 | `n8n--debugging` | Investigação de workflows com erro ou output inesperado |
 | `n8n--extending-mcp` | Expor workflows n8n como tools MCP para agentes |
+
+### `n8n--workflow-lifecycle`
+**O que é:** Skill de ciclo de vida completo de workflows n8n — planejar, construir, validar, testar, publicar e fazer handoff.
+
+**Responsabilidades:**
+- Definir estrutura visual, nomes, descrições e organização do workflow
+- Aplicar as etapas PLAN → BUILD → VALIDATE → TEST → PUBLISH → HANDOFF
+- Rodar `validate_workflow` e conferir `connections` com `get_workflow_details`
+- Tratar limitações de folders, projetos e acesso MCP
+- Evitar publicar sem teste representativo e sem verificação das credenciais
+
+**Quando usar:** qualquer criação, edição, organização, publicação, deploy ou validação final de workflow n8n.
+
+---
+
+### `n8n--node-configuration`
+**O que é:** Especialista em configurar nós n8n com parâmetros corretos, dependências entre campos e operações suportadas.
+
+**Responsabilidades:**
+- Consultar tipos de nós e parâmetros reais antes de configurar
+- Configurar HTTP, Webhook, banco, comunicações, AI, triggers, Merge e Switch
+- Evitar assumir nomes de parâmetros ou defaults
+- Validar configurações de nós individualmente quando necessário
+- Tratar casos especiais como Merge com múltiplas entradas e fallback de Switch
+
+**Quando usar:** sempre que criar ou alterar qualquer node no workflow.
+
+---
+
+### `n8n--expressions`
+**O que é:** Especialista em expressões n8n `{{ ... }}`, `$json`, `$node`, Luxon e transformações inline.
+
+**Responsabilidades:**
+- Escrever expressões corretas para campos dinâmicos
+- Usar `$json`, `$input`, `$node` e dados de execuções anteriores corretamente
+- Fazer date math e formatação com Luxon
+- Preferir expressions/Edit Fields quando não há necessidade real de Code node
+- Depurar erros de expressão e referências quebradas
+
+**Quando usar:** qualquer campo com `{{...}}`, mapeamento dinâmico, transformação simples ou erro de expressão.
+
+---
+
+### `n8n--loops`
+**O que é:** Guia para processar múltiplos itens, batches, paginação e padrões de repetição no n8n.
+
+**Responsabilidades:**
+- Diferenciar iteração automática por item de Loop Over Items explícito
+- Configurar batches e paginação HTTP
+- Evitar loops desnecessários quando o node já processa item-a-item
+- Projetar fan-out e execução assíncrona com subworkflows quando fizer sentido
+- Tratar agregação e recombinação de resultados
+
+**Quando usar:** listas, batches, paginação, "for each", processamento em massa ou fan-out.
+
+---
+
+### `n8n--subworkflows`
+**O que é:** Skill de modularização e reuso de lógica via subworkflows.
+
+**Responsabilidades:**
+- Decidir quando extrair lógica para subworkflow
+- Definir contratos de input/output com `Execute Workflow Trigger`
+- Usar `Define Below` quando subworkflow virar tool de agent ou MCP
+- Nomear subworkflows para descoberta futura
+- Separar contratos divergentes, como JSON vs binary ou sync vs async
+
+**Quando usar:** lógica reutilizável, chunks com mais de alguns nós, ferramentas para agents, ou workflow que precisa virar módulo.
+
+---
+
+### `n8n--error-handling`
+**O que é:** Especialista em tratamento de erros para workflows de produção.
+
+**Responsabilidades:**
+- Criar branches de erro em nodes falíveis
+- Definir error workflows e respostas HTTP adequadas
+- Separar erros do caller (4xx) de falhas internas (5xx)
+- Padronizar shapes de resposta de erro
+- Validar comportamento quando APIs, bancos ou serviços externos falham
+
+**Quando usar:** workflows publicados, webhooks, integrações externas ou qualquer fluxo que precisa falhar de forma controlada.
+
+---
+
+### `n8n--agents`
+**O que é:** Especialista em features de IA no n8n: AI Agent, LLM chains, tool calling, memória, RAG e structured output.
+
+**Responsabilidades:**
+- Escolher entre Agent, Basic LLM Chain, Text Classifier, Information Extractor e outros nodes LangChain
+- Configurar model, memory, tools e output parser como subnodes
+- Escrever nomes e descrições de tools como parte do prompt
+- Usar structured output com parser e auto-fix
+- Modelar subworkflows como tools com inputs tipados via `fromAi()`
+
+**Quando usar:** agent, chat assistant, LLM com tools, system prompt, memory, RAG, embeddings, output parser ou qualquer node `@n8n/n8n-nodes-langchain.*`.
+
+---
+
+### `n8n--credentials-and-security`
+**O que é:** Skill de autenticação, credenciais e segurança em workflows n8n.
+
+**Responsabilidades:**
+- Usar o sistema de credenciais para tokens, API keys, OAuth e senhas
+- Nunca colocar secrets em campos de texto, Set nodes ou código
+- Listar credenciais existentes e vincular por ID quando possível
+- Orientar criação manual de credenciais quando o MCP não puder criá-las
+- Tratar secrets colados no chat como comprometidos e recomendar rotação
+
+**Quando usar:** API key, bearer token, OAuth, headers de auth, serviços externos ou qualquer configuração com segredo.
+
+---
+
+### `n8n--code-nodes`
+**O que é:** Guia para decidir quando usar Code node e como escrever JavaScript/Python em n8n.
+
+**Responsabilidades:**
+- Tratar Code node como último recurso
+- Preferir expression ou arrow function em Edit Fields para transformações simples
+- Usar JavaScript por padrão, Python só quando explicitamente pedido
+- Aplicar padrões corretos para `$input`, `$json`, múltiplas fontes e retorno de itens
+- Evitar lógica opaca que poderia ser representada por nodes nativos
+
+**Quando usar:** Code node, JavaScript/Python, custom logic, transformações complexas ou tentação de "resolver no código".
+
+---
+
+### `n8n--data-tables`
+**O que é:** Especialista em Data Tables do n8n para estado persistente, deduplicação e dados tabulares simples.
+
+**Responsabilidades:**
+- Projetar schemas com colunas padrão e tipos suportados
+- Modelar dedup, idempotência e estado cross-execução
+- Evitar usar Data Tables como banco relacional completo
+- Trabalhar com limitações de tipos, chaves e relacionamentos
+- Mapear operações CRUD dentro de workflows
+
+**Quando usar:** Data Tables, armazenamento simples, dedup, idempotência, estado persistente ou tabelas internas do n8n.
+
+---
+
+### `n8n--binary-and-data`
+**O que é:** Skill para arquivos, imagens, anexos e dados binários em n8n.
+
+**Responsabilidades:**
+- Diferenciar dados JSON em `$json` de arquivos em `$binary`
+- Configurar upload, download, anexos e leitura de buffers
+- Preservar binary data com Merge quando etapas intermediárias removem contexto
+- Lidar com limites entre Agent tools e binary data
+- Usar storage/URLs quando arquivos precisam atravessar fronteiras JSON-only
+
+**Quando usar:** arquivo, imagem, PDF, attachment, upload, download, multimodal, vision ou agent tool que precisa receber/retornar arquivo.
+
+---
+
+### `n8n--debugging`
+**O que é:** Investigador de workflows n8n com erro, output inesperado ou comportamento diferente do esperado.
+
+**Responsabilidades:**
+- Conferir parâmetros reais de nodes e execuções
+- Investigar validação que passa mas workflow quebra em runtime
+- Buscar fonte do n8n quando comportamento não estiver claro
+- Diagnosticar erros de expressão, conexões, credenciais e shapes de dados
+- Transformar sintomas em hipóteses testáveis
+
+**Quando usar:** "não funciona", erro em execução, output vazio, node pulado, parâmetro ignorado ou comportamento estranho.
+
+---
+
+### `n8n--extending-mcp`
+**O que é:** Guia para expor workflows n8n como tools MCP quando o MCP atual não cobre uma capacidade necessária.
+
+**Responsabilidades:**
+- Identificar lacunas do MCP nativo
+- Criar workflows-tool com contratos claros
+- Expor operações n8n para agentes externos
+- Garantir permissões e segurança antes de automatizar ações sensíveis
+- Documentar inputs, outputs e limitações da tool exposta
+
+**Quando usar:** quando uma capacidade precisa existir como tool MCP e não há ferramenta nativa suficiente.
 
 ---
 
@@ -826,6 +1121,13 @@ dev--test-master          → testes do agente
 | Monitoring / Observabilidade | `arch--monitoring-expert` |
 | Refatorar código ruim | `dev--code-refactoring` |
 | Simplificação pontual | `code-simplifier` (agente) |
+| Economizar tokens na conversa | `tools--caveman` |
+| Delegar com output comprimido | `tools--cavecrew` |
+| Commit message curta | `tools--caveman-commit` |
+| Review curto e acionável | `tools--caveman-review` |
+| Comprimir arquivo de memória | `tools--caveman-compress` |
+| Ajuda dos comandos Caveman | `tools--caveman-help` |
+| Ver uso real de tokens | `tools--caveman-stats` |
 | Planejar roadmap do projeto | `product--project-planner` |
 | Validar antes de construir | `product--product-discovery` |
 | Qualquer coisa com N8N | `n8n--using-skills` (roteia automaticamente) |
