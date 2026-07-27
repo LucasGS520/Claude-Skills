@@ -20,6 +20,8 @@
 - [n8n-- → Automação N8N](#n8n----automação-n8n)
 - [product-- → Produto & Análise](#product----produto--análise)
 - [Skills Oficiais Anthropic (Superpowers)](#skills-oficiais-anthropic-superpowers)
+- [Plugins de Terceiros](#plugins-de-terceiros)
+- [Ferramentas Per-Project (não instaladas globalmente)](#ferramentas-per-project-não-instaladas-globalmente)
 - [Fluxos de Sinergia](#fluxos-de-sinergia)
 - [Referência Rápida](#referência-rápida)
 
@@ -38,10 +40,40 @@
 
 **Localização das skills:**
 ```
-~/.claude/skills/          → suas 55 skills globais locais (qualquer projeto)
-~/.claude/plugins/cache/   → skills oficiais Anthropic (Superpowers, frontend-design, etc.)
+~/.claude/skills/          → skills globais locais (qualquer projeto)
+~/.claude/plugins/cache/   → plugins de marketplace (Superpowers, frontend-design, genjutsu, gsap-skills, etc.)
 <projeto>/.claude/skills/  → skills específicas de cada projeto
 ```
+
+## Setup em Máquina Nova
+
+Este repositório reproduz o setup completo (skills-pasta + plugins de marketplace) com um comando:
+
+```bash
+git clone https://github.com/LucasGS520/Claude-Skills.git
+cd Claude-Skills
+./install.sh
+```
+
+**O que o script faz:**
+1. Copia toda `.claude/skills/*` do repo pra `~/.claude/skills/` (skills-pasta — portáteis, sem instalação real)
+2. Lê `plugins.json` e roda `claude plugin marketplace add` pra cada marketplace de terceiros ainda não configurado (idempotente — pula se já existe)
+3. `claude plugin marketplace update` pra garantir cache atualizado antes de instalar
+4. `claude plugin install` pra cada plugin listado (oficiais Anthropic + terceiros), idempotente
+
+**Dois mecanismos, um motivo pra cada:**
+
+| | Skills-pasta | Plugin marketplace |
+|---|---|---|
+| Estrutura | só `SKILL.md` (+ `references/`, opcional) | `.claude-plugin/plugin.json` + `marketplace.json` |
+| Como carrega | Claude Code varre `~/.claude/skills/*/SKILL.md` direto | sistema `/plugin` — cache em `~/.claude/plugins/cache/`, registro em `~/.claude/settings.json` |
+| Portabilidade | copia pasta, funciona | precisa `marketplace add` + `install` de novo em cada máquina |
+| Por que existe | zero overhead, ideal pra skill única e autocontida | pra plugins que agregam hooks/MCP/subagents/slash-commands, ou que dependem de `${CLAUDE_PLUGIN_ROOT}` pra resolver sub-skills internas (caso do `genjutsu`) — não dá pra copiar pasta manual sem quebrar |
+| Update | manual (reinstala) | `claude plugin update` |
+
+Nem toda skill de plugin pode virar pasta sem fork (genjutsu, e os oficiais Anthropic dependem do mecanismo). Por isso o repo padroniza o **processo** (`install.sh` + `plugins.json`), não o mecanismo — reproduz os dois tipos com um comando só, independente de qual é qual.
+
+**Ao instalar uma skill nova:** se for skills-pasta, `cp` pra `.claude/skills/<categoria>--<nome>/` no repo (padrão já seguido). Se for plugin de marketplace, adiciona a entrada em `plugins.json` (marketplace + id do plugin) — não precisa editar `install.sh`.
 
 **Status GitHub:** o repositório público [`LucasGS520/Claude-Skills`](https://github.com/LucasGS520/Claude-Skills) rastreado por `origin/main` contém 47 skills com `SKILL.md`. Estas 8 skills existem localmente, mas ainda não estão em `origin/main`: `dev--security-auditor`, `tools--cavecrew`, `tools--caveman`, `tools--caveman-commit`, `tools--caveman-compress`, `tools--caveman-help`, `tools--caveman-review`, `tools--caveman-stats`.
 
@@ -443,6 +475,80 @@
 - Utility types (Pick, Omit, ReturnType, etc.)
 - tRPC para type safety end-to-end frontend-backend
 - Configuração de monorepo TypeScript
+
+---
+
+### `frontend--design-dna`
+**O que é:** Workflow de 3 fases pra extrair, estruturar e aplicar identidade visual — design system (tokens mensuráveis), design style (percepção qualitativa) e visual effects (Canvas/WebGL/3D/shaders/scroll).
+
+**Fonte:** [`zanwei/design-dna`](https://github.com/zanwei/design-dna) — instalada globalmente em `~/.claude/skills/frontend--design-dna/SKILL.md`
+
+**As 3 dimensões:**
+1. **design_system** — cor, tipografia, spacing, layout, shape, elevation, motion, componentes (valores exatos: hex, px, rem)
+2. **design_style** — mood, linguagem visual, composição, imagery, interaction feel, brand voice (qualitativo)
+3. **visual_effects** — Canvas, WebGL, 3D, partículas, shaders, scroll effects, cursor effects, glassmorphism (o que CSS puro não expressa)
+
+**Fases:**
+- **Structure** — mostra o schema completo (`references/schema.md`) quando o usuário pede a estrutura
+- **Analyze** — recebe imagens/screenshots/URLs de referência e extrai um JSON Design DNA completo, campo por campo, nas 3 dimensões
+- **Generate** — recebe DNA JSON + conteúdo e gera o design (`references/generation-guide.md`), escolhendo tecnologia pela intensidade do efeito (CSS/SVG leve → Canvas 2D/GSAP/Lottie médio → Three.js/GLSL/Pixi.js pesado)
+
+**Quando usar:** "extrai o design DNA disso", "analisa esse design/screenshot/site", "gera um design a partir desse JSON", replicar estilo de uma referência em conteúdo novo.
+
+**Diferença de `frontend-design:frontend-design`:** `frontend-design` dá direção visual geral em prosa (estética, tipografia, paleta) sem formato estruturado. `design-dna` produz **JSON estruturado e replicável** nas 3 dimensões, com pipeline extract→apply — serve pra clonar/adaptar um estilo existente com precisão, não só orientar uma escolha nova.
+
+**Sinergia com:** `frontend-design:frontend-design` (direção quando não há referência) + `genjutsu:paint` (MASTER.md de design system pode nascer do JSON extraído) + `frontend--threejs-*`/`gsap-skills:gsap-*` (implementação dos visual_effects pesados)
+
+---
+
+### `frontend--motion-design`
+**O que é:** Princípios de motion design pra animações e transições — timing, easing, coreografia e princípios Disney adaptados pra UI. Agnóstico de biblioteca: funciona com CSS, Framer Motion, GSAP, Lottie, Spring ou qualquer sistema de animação.
+
+**Fonte:** [`lottiefiles/motion-design-skill`](https://github.com/lottiefiles/motion-design-skill) — instalada globalmente em `~/.claude/skills/frontend--motion-design/SKILL.md`
+
+**Responsabilidades:**
+- Três pilares obrigatórios antes de decisão técnica: Intenção Emocional, Narrativa Visual, Motion Craft
+- Checklist de 8 passos (alvo emocional, personalidade de motion, propriedade primária, duração, easing, hero element, camadas secundárias, regras de 1/3)
+- Tabelas de timing/easing e princípios de animação Disney aplicados a interface
+- Padrões de choreography (entrance/exit, multi-elemento, ambient-continuous, state-feedback)
+- Framework de decisão + checklist de qualidade + troubleshooting
+
+**Quando usar:**
+- Criar animações de UI (botões, cards, modais, transições de página)
+- Micro-interações e feedback animado
+- Loading/success/error states
+- Sequências multi-elemento com stagger
+- Estabelecer identidade de motion de marca
+
+**Diferença de `genjutsu:cast`/`genjutsu:paint`:** `motion-design` é biblioteca de **princípios** (o quê e por quê da animação — timing, easing, narrativa). `genjutsu` é pipeline de **implementação** multi-stack (o como — código GSAP/Framer/Compose/SwiftUI, scan de stack, audit). Use `motion-design` pra fundamentar a decisão de motion, `genjutsu` pra executar tecnicamente.
+
+**Sinergia com:** `genjutsu:cast`/`genjutsu:paint` (implementação técnica) + `frontend--ui-ux-expert` (acessibilidade/performance da UI)
+
+---
+
+### `frontend--threejs-*` (10 skills)
+**O que é:** Coleção de referência Three.js — API precisa, exemplos funcionais e patterns de performance, auditados contra a documentação oficial (r160+).
+
+**Fonte:** [`cloudai-x/threejs-skills`](https://github.com/cloudai-x/threejs-skills) — instaladas globalmente em `~/.claude/skills/frontend--threejs-*/SKILL.md`
+
+| Skill | Foco |
+|---|---|
+| `frontend--threejs-fundamentals` | Scene, cameras, renderer, hierarquia Object3D, coordenadas |
+| `frontend--threejs-geometry` | Shapes built-in, BufferGeometry, geometria custom, instancing |
+| `frontend--threejs-materials` | PBR, basic/phong/standard, shader materials |
+| `frontend--threejs-lighting` | Tipos de luz, sombras, environment lighting, light helpers |
+| `frontend--threejs-textures` | Tipos de textura, UV mapping, environment maps, render targets |
+| `frontend--threejs-animation` | Keyframe, skeletal, morph targets, animation mixing |
+| `frontend--threejs-loaders` | GLTF/GLB, texturas, padrões async, caching |
+| `frontend--threejs-shaders` | GLSL básico, ShaderMaterial, uniforms, efeitos custom |
+| `frontend--threejs-postprocessing` | EffectComposer, bloom, DOF, screen effects, passes custom |
+| `frontend--threejs-interaction` | Raycasting, camera controls, mouse/touch, seleção de objeto |
+
+**Quando usar:** cada skill ativa pelo contexto específico — criar cena 3D aciona `fundamentals`, carregar GLTF aciona `loaders` + `animation`, efeito visual custom aciona `shaders` + `postprocessing`.
+
+**Diferença de `genjutsu:cast` (sub-skill `threejs-r3f`):** `genjutsu` cobre **React Three Fiber** (integração React declarativa) dentro do pipeline thesis→implement→audit, carregado internamente e nunca invocado direto. `frontend--threejs-*` é **API Three.js vanilla/addons** pura, cada skill invocável e combinável independente, sem pipeline de discovery/thesis.
+
+**Sinergia com:** `genjutsu:cast` (se o projeto usa React Three Fiber, cast cobre a camada declarativa; use threejs-* pra API de baixo nível) + `frontend--motion-design` (timing/easing de animações 3D)
 
 ---
 
@@ -998,6 +1104,89 @@ tools--graphify <caminho> --no-viz                       # JSON + report, pula v
 
 ---
 
+## Plugins de Terceiros
+
+> Instalados via marketplace de plugin (`claude plugin marketplace add` + `claude plugin install`), não por cópia manual em `~/.claude/skills/`. Ficam em `~/.claude/plugins/cache/<marketplace>/`, atualizados pelo próprio sistema de plugins.
+
+### `genjutsu:cast` e `genjutsu:paint`
+**O que é:** Plugin de creative coding para motion design, micro-interações e sistemas visuais — cobre Web (React/Vue/Svelte, GSAP, Framer Motion, CSS nativo, Three.js, Canvas generativo), Android (Jetpack Compose, Compose Multiplatform) e Apple (SwiftUI iOS/macOS).
+
+**Fonte:** [`AThevon/genjutsu`](https://github.com/AThevon/genjutsu) — instalado via `claude plugin marketplace add https://github.com/AThevon/genjutsu.git` + `claude plugin install genjutsu@genjutsu`.
+
+**Estrutura:** dois orquestradores (`cast`, `paint`) carregam dinamicamente 15 sub-skills internas em `_jutsu/` (nunca invocadas diretamente) conforme stack detectado e escopo do pedido. Resolução de caminho via `${CLAUDE_PLUGIN_ROOT}` — por isso instalado como plugin real, não copiado manualmente como `tools--graphify`/`tools--caveman`.
+
+**`genjutsu:cast` — The Illusionist:**
+- Pipeline: Scan stack → Evaluate scope → Propõe interaction thesis → Load sub-skills → Implement → Mini-audit
+- Uso: efeito isolado, animação pontual, polish de interação existente (ex: "adiciona scroll animation nessa seção", "deixa esse dropdown mais snappy")
+
+**`genjutsu:paint` — The Master Painter:**
+- Pipeline: Brainstorm → Define visual + interaction thesis → Gera design system persistente (`MASTER.md`/`Theme.kt`/`Color+App.swift`) → Implement → Full audit
+- Uso: redesign completo, sistema de design do zero (ex: "redesenha a landing page inteira", "monta um portfólio do zero")
+
+**Regras do plugin (Iron Rules):**
+- Nunca codar sem interaction thesis validada pelo usuário
+- Uma pergunta por vez na fase de discovery, nunca em lote
+- Rejeita AI slop genérico (gradiente arco-íris, glassmorphism gratuito, "moderno e clean")
+- Nunca instala dependência sem perguntar
+- Complexidade proporcional ao escopo (hover effect não justifica GSAP + ScrollTrigger)
+
+**Diferença de `frontend-design:frontend-design`:** `frontend-design` decide direção visual geral (estética, tipografia, paleta). `genjutsu:paint`/`cast` implementam tecnicamente motion e interação, com pipeline próprio de thesis + audit multi-stack (web/Compose/SwiftUI), incluindo Android e Apple nativos que `frontend-design` não cobre.
+
+**Sinergia com:** `frontend-design:frontend-design` (direção visual antes) + `frontend--ui-ux-expert` (implementação React/acessibilidade) + `dev--test-master` (testes de componente/regressão visual)
+
+---
+
+### `gsap-skills:gsap-*` (8 skills)
+**O que é:** Skills oficiais GreenSock — API GSAP completa: core, timelines, ScrollTrigger, plugins, React, outros frameworks, performance e utils.
+
+**Fonte:** [`greensock/gsap-skills`](https://github.com/greensock/gsap-skills) — instalado via `claude plugin marketplace add https://github.com/greensock/gsap-skills.git` + `claude plugin install gsap-skills@gsap-skills`.
+
+| Skill | Foco |
+|---|---|
+| `gsap-core` | `gsap.to/from/fromTo`, easing, duration, stagger, defaults, `matchMedia()` (responsivo/reduced-motion) |
+| `gsap-timeline` | `gsap.timeline()`, position parameter, nesting, playback |
+| `gsap-scrolltrigger` | Scroll-linked animation, pinning, scrub, triggers, parallax |
+| `gsap-plugins` | ScrollToPlugin, ScrollSmoother, Flip, Draggable, Inertia, Observer, SplitText, ScrambleText, SVG, CustomEase e afins |
+| `gsap-react` | `useGSAP` hook, refs, `gsap.context()`, cleanup |
+| `gsap-frameworks` | Vue, Svelte, Nuxt, SvelteKit — lifecycle, scoping, cleanup on unmount |
+| `gsap-performance` | Transforms vs layout thrashing, `will-change`, batching, 60fps |
+| `gsap-utils` | `gsap.utils`: clamp, mapRange, normalize, interpolate, random, snap, toArray, wrap, pipe |
+
+**Nota:** GSAP e todos os plugins (SplitText, MorphSVG, etc.) são 100% gratuitos desde a aquisição pelo Webflow — sem Club membership, sem registry privado.
+
+**Diferença de `genjutsu:cast` (sub-skill `gsap`):** `genjutsu` cobre GSAP dentro do pipeline thesis→implement→audit multi-stack, carregado internamente. `gsap-skills` é API GSAP standalone, cada skill invocável direto, sem pipeline de discovery.
+
+**Sinergia com:** `genjutsu:cast` (pipeline de implementação) + `frontend--motion-design` (timing/easing/narrativa antes de escrever timeline)
+
+---
+
+## Ferramentas Per-Project (não instaladas globalmente)
+
+> Skills que dependem de um app/scaffold companion rodando dentro do projeto (dev server, player, banco de arquivos específico). Não fazem sentido em `~/.claude/skills/` porque a skill sozinha, sem o app companion, não funciona — instalar globalmente criaria uma skill que ativa mas quebra na hora de executar.
+
+### `text-to-lottie`
+**O que é:** Framework pra gerar animações Lottie/Bodymovin JSON production-ready com verificação ao vivo num player Skia Skottie local (Vite + React).
+
+**Fonte:** [`diffusionstudio/lottie`](https://github.com/diffusionstudio/lottie)
+
+**Por que não é skill global:** a skill assume a existência de "the official player project" — um app Vite/React que o próprio repo é. Cenas são lidas/escritas em `public/projects/<projeto>/<scene-N>/lottie.json` dentro desse app, com dev server rodando pra preview live (`?frame=N`). Sem esse scaffold, a skill não tem onde escrever nem como verificar o resultado.
+
+**Como usar quando precisar:** dentro do projeto específico que vai gerar Lottie (não neste repo de skills globais), rodar:
+```bash
+npx skills add diffusionstudio/lottie
+```
+Isso instala a skill `text-to-lottie` e o player app naquele projeto. Depois pedir ao agente pra gerar a animação — ele resolve o SVG/dados de entrada, escreve o JSON na cena e valida no player.
+
+**Responsabilidades (quando ativa num projeto):**
+- Roteamento por tipo de pedido (logo, tipografia, lower-third, loader/ícone, microinteração, diagrama técnico, dados/stats, promo, efeitos visuais) pra referência específica
+- Defaults de design restritivo ("premium = subtrair, não adicionar" — zero chrome/card/borda por padrão)
+- Regras de cena: slots editáveis, `controls.json`, texto nativo Lottie com fonte embutida, easing não-linear obrigatório
+- Verificação: valida JSON, roda dev server, inspeciona frames exatos antes de finalizar
+
+**Sinergia com:** `frontend--motion-design` (timing/easing/princípios que fundamentam a animação antes de virar JSON)
+
+---
+
 ## Fluxos de Sinergia
 
 ### Feature Nova (do zero ao PR)
@@ -1100,6 +1289,13 @@ dev--test-master          → testes do agente
 | Segurança antes de subir | `dev--security-reviewer` → `dev--secure-code-guardian` |
 | Auditoria npm | `dev--security-auditor` |
 | Nova tela UI | `frontend-design` → `frontend--ui-ux-expert` |
+| Motion/micro-interação pontual | `genjutsu:cast` |
+| Redesign completo / design system do zero | `genjutsu:paint` |
+| Fundamentar timing/easing/narrativa de uma animação | `frontend--motion-design` |
+| Cena/geometria/shader/GLTF Three.js | `frontend--threejs-*` (skill específica pelo contexto) |
+| Timeline/ScrollTrigger/plugin GSAP | `gsap-skills:gsap-*` (skill específica pelo contexto) |
+| Extrair/clonar estilo de referência (imagem/URL) | `frontend--design-dna` |
+| Gerar Lottie JSON (dentro de projeto com player) | `text-to-lottie` (`npx skills add diffusionstudio/lottie`) |
 | TypeScript complexo | `frontend--typescript-pro` |
 | Python moderno | `dev--python-pro` |
 | Query lenta | `db--database-optimizer` + `db--sql-pro` |

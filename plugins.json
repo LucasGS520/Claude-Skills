@@ -1,0 +1,27 @@
+{
+  "_comment": "Manifest of plugin-marketplace skills (not folder-copied). Used by install.sh to reproduce this setup on a new machine. Folder-based skills live in .claude/skills/ and are reproduced by plain copy.",
+  "marketplaces": [
+    {
+      "name": "caveman",
+      "url": "https://github.com/JuliusBrussee/caveman.git"
+    },
+    {
+      "name": "genjutsu",
+      "url": "https://github.com/AThevon/genjutsu.git"
+    },
+    {
+      "name": "gsap-skills",
+      "url": "https://github.com/greensock/gsap-skills.git"
+    }
+  ],
+  "plugins": [
+    "superpowers@claude-plugins-official",
+    "frontend-design@claude-plugins-official",
+    "skill-creator@claude-plugins-official",
+    "code-simplifier@claude-plugins-official",
+    "code-review@claude-plugins-official",
+    "caveman@caveman",
+    "genjutsu@genjutsu",
+    "gsap-skills@gsap-skills"
+  ]
+}
