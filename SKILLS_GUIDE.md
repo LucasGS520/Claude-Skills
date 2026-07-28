@@ -4,7 +4,7 @@
 > Local: `~/.claude/SKILLS_GUIDE.md`
 > Para navegar as pastas: `ls ~/.claude/skills/`
 
----
+================================================================================
 
 ## Sumário
 
@@ -14,22 +14,24 @@
 
 ### Blocos Temáticos
 - [Agentes IA & LLMs](#agentes-ia--llms)
-- [Desenvolvimento & Qualidade](#desenvolvimento--qualidade)
+- [Análise & Dados](#análise--dados)
 - [Arquitetura & Infraestrutura](#arquitetura--infraestrutura)
 - [Banco de Dados](#banco-de-dados)
+- [Desenvolvimento & Qualidade](#desenvolvimento--qualidade)
 - [Frontend & Design](#frontend--design)
-- [Análise & Dados](#análise--dados)
-- [Automação](#automação)
-- [Marketing & Produto](#marketing--produto)
-- [Aprendizado & Exploração](#aprendizado--exploração)
+- [Aprendizado](#aprendizado)
+- [Ferramentas & Exploração](#ferramentas--exploração)
+- [Automação & Criação de Workflows](#automação--criação-de-workflows)
+- [Produto](#produto)
+- [Marketing](#marketing)
 - [Skills Oficiais & Plugins](#skills-oficiais--plugins)
-- [Ferramentas Per-Project](#ferramentas-per-project-não-instaladas-globalmente)
+- [Plugins de Terceiros](#plugins-de-terceiros)
 
 ### Referência
 - [Fluxos de Sinergia](#fluxos-de-sinergia)
 - [Referência Rápida](#referência-rápida)
 
----
+================================================================================
 
 ## Como as Skills Funcionam
 
@@ -49,7 +51,7 @@
 <projeto>/.claude/skills/  → skills específicas de cada projeto
 ```
 
-## Setup em Máquina Nova
+### Setup em Máquina Nova
 
 Este repositório reproduz o setup completo (skills-pasta + plugins de marketplace) com um comando:
 
@@ -79,9 +81,7 @@ Nem toda skill de plugin pode virar pasta sem fork (genjutsu, e os oficiais Anth
 
 **Ao instalar uma skill nova:** se for skills-pasta, `cp` pra `.claude/skills/<categoria>--<nome>/` no repo (padrão já seguido). Se for plugin de marketplace, adiciona a entrada em `plugins.json` (marketplace + id do plugin) — não precisa editar `install.sh`.
 
-**Status GitHub:** o repositório público [`LucasGS520/Claude-Skills`](https://github.com/LucasGS520/Claude-Skills) rastreado por `origin/main` contém 47 skills com `SKILL.md`. Estas 8 skills existem localmente, mas ainda não estão em `origin/main`: `dev--security-auditor`, `tools--cavecrew`, `tools--caveman`, `tools--caveman-commit`, `tools--caveman-compress`, `tools--caveman-help`, `tools--caveman-review`, `tools--caveman-stats`.
-
----
+================================================================================
 
 ## Agentes IA & LLMs
 
@@ -181,7 +181,7 @@ Nem toda skill de plugin pode virar pasta sem fork (genjutsu, e os oficiais Anth
 
 **Sinergia com:** `ai--agent-development` — use `ai--prompt-engineer` para o conteúdo do prompt, depois `ai--agent-development` para estruturar o agente.
 
----
+================================================================================
 
 ## Análise & Dados
 
@@ -218,7 +218,7 @@ Nem toda skill de plugin pode virar pasta sem fork (genjutsu, e os oficiais Anth
 
 **Sinergia:** `data--pandas-pro` processa os dados → `data--storyteller` transforma em narrativa.
 
----
+================================================================================
 
 ## Arquitetura & Infraestrutura
 
@@ -282,7 +282,6 @@ Nem toda skill de plugin pode virar pasta sem fork (genjutsu, e os oficiais Anth
 ### `arch--browserbase-*` (16 skills)
 **O que é:** Framework completo de automação de browser com Browserbase — planejamento, implementação, tracing, testes e deploy cloud.
 
-**Fonte:** [`browserbase/skills`](https://github.com/browserbase/skills) — instaladas globalmente em `~/.claude/skills/arch--browserbase-*/SKILL.md`
 
 | Skill | Foco |
 |---|---|
@@ -325,6 +324,12 @@ Nem toda skill de plugin pode virar pasta sem fork (genjutsu, e os oficiais Anth
 - Capacity planning
 
 **Sinergia com:** `arch--devops-engineer` (infra e deploy) + `dev--debugging-wizard` (investigação de problemas em produção).
+
+================================================================================
+
+## Banco de Dados
+
+> Skills para manipulação, comandos, entedimento e estrutura sobre Database.
 
 ### db-- → Banco de Dados
 
@@ -370,7 +375,7 @@ Nem toda skill de plugin pode virar pasta sem fork (genjutsu, e os oficiais Anth
 
 **Sinergia:** Use após `db--sql-pro` — primeiro escreve a query certa, depois otimiza.
 
----
+================================================================================
 
 ## Desenvolvimento & Qualidade
 
@@ -510,7 +515,7 @@ Nem toda skill de plugin pode virar pasta sem fork (genjutsu, e os oficiais Anth
 
 **Diferença de usar skills individuais:** Ao usar `fastapi-expert` + `react-expert` separadamente, você pode criar inconsistências entre camadas. `dev--fullstack-guardian` considera as três camadas ao mesmo tempo, garantindo contratos corretos.
 
----
+================================================================================
 
 ## Frontend & Design
 
@@ -535,8 +540,6 @@ Nem toda skill de plugin pode virar pasta sem fork (genjutsu, e os oficiais Anth
 ### `frontend--design-dna`
 **O que é:** Workflow de 3 fases pra extrair, estruturar e aplicar identidade visual — design system (tokens mensuráveis), design style (percepção qualitativa) e visual effects (Canvas/WebGL/3D/shaders/scroll).
 
-**Fonte:** [`zanwei/design-dna`](https://github.com/zanwei/design-dna) — instalada globalmente em `~/.claude/skills/frontend--design-dna/SKILL.md`
-
 **As 3 dimensões:**
 1. **design_system** — cor, tipografia, spacing, layout, shape, elevation, motion, componentes (valores exatos: hex, px, rem)
 2. **design_style** — mood, linguagem visual, composição, imagery, interaction feel, brand voice (qualitativo)
@@ -557,8 +560,6 @@ Nem toda skill de plugin pode virar pasta sem fork (genjutsu, e os oficiais Anth
 
 ### `frontend--motion-design`
 **O que é:** Princípios de motion design pra animações e transições — timing, easing, coreografia e princípios Disney adaptados pra UI. Agnóstico de biblioteca: funciona com CSS, Framer Motion, GSAP, Lottie, Spring ou qualquer sistema de animação.
-
-**Fonte:** [`lottiefiles/motion-design-skill`](https://github.com/lottiefiles/motion-design-skill) — instalada globalmente em `~/.claude/skills/frontend--motion-design/SKILL.md`
 
 **Responsabilidades:**
 - Três pilares obrigatórios antes de decisão técnica: Intenção Emocional, Narrativa Visual, Motion Craft
@@ -583,8 +584,6 @@ Nem toda skill de plugin pode virar pasta sem fork (genjutsu, e os oficiais Anth
 ### `frontend--threejs-*` (10 skills)
 **O que é:** Coleção de referência Three.js — API precisa, exemplos funcionais e patterns de performance, auditados contra a documentação oficial (r160+).
 
-**Fonte:** [`cloudai-x/threejs-skills`](https://github.com/cloudai-x/threejs-skills) — instaladas globalmente em `~/.claude/skills/frontend--threejs-*/SKILL.md`
-
 | Skill | Foco |
 |---|---|
 | `frontend--threejs-fundamentals` | Scene, cameras, renderer, hierarquia Object3D, coordenadas |
@@ -597,8 +596,6 @@ Nem toda skill de plugin pode virar pasta sem fork (genjutsu, e os oficiais Anth
 | `frontend--threejs-shaders` | GLSL básico, ShaderMaterial, uniforms, efeitos custom |
 | `frontend--threejs-postprocessing` | EffectComposer, bloom, DOF, screen effects, passes custom |
 | `frontend--threejs-interaction` | Raycasting, camera controls, mouse/touch, seleção de objeto |
-
-**Quando usar:** cada skill ativa pelo contexto específico — criar cena 3D aciona `fundamentals`, carregar GLTF aciona `loaders` + `animation`, efeito visual custom aciona `shaders` + `postprocessing`.
 
 **Diferença de `genjutsu:cast` (sub-skill `threejs-r3f`):** `genjutsu` cobre **React Three Fiber** (integração React declarativa) dentro do pipeline thesis→implement→audit, carregado internamente e nunca invocado direto. `frontend--threejs-*` é **API Three.js vanilla/addons** pura, cada skill invocável e combinável independente, sem pipeline de discovery/thesis.
 
@@ -619,11 +616,11 @@ Nem toda skill de plugin pode virar pasta sem fork (genjutsu, e os oficiais Anth
 
 **Diferença do `frontend-design:frontend-design`:** `frontend-design` decide **como deve parecer** (estética, tipografia, paleta). `frontend--ui-ux-expert` decide **como implementar tecnicamente** (componentes, acessibilidade, performance). Use em sequência.
 
----
+================================================================================
 
-## Aprendizado & Exploração
+## Aprendizado
 
-> Skills pra aprender libs externas, explorar codebase, criar gráficos de conhecimento e entender código.
+> Skills pra aprender libs externas, entender código, contextualização e aprendizado sobre o projeto.
 
 ### learn-- → Aprendizado & Descoberta
 
@@ -641,21 +638,11 @@ Nem toda skill de plugin pode virar pasta sem fork (genjutsu, e os oficiais Anth
 ### `learn--context7-docs`
 **O que é:** Fetch de documentação atualizada + exemplos de código pra qualquer biblioteca, framework, SDK ou ferramenta — prioriza docs versionadas sobre training data.
 
-**Fonte:** [`upstash/context7`](https://github.com/upstash/context7) — instalada globalmente em `~/.claude/skills/learn--context7-docs/SKILL.md`
-
 **Responsabilidades:**
 - Resolver nome da biblioteca pra ID no registry Context7
 - Buscar docs versionadas (ignora training data potencialmente outdated)
 - Fetch de exemplos de código, API signatures, config options
 - Suportar migration guides entre versões
-
-**Quando usar:**
-- Perguntas sobre API (mesmo libs bem-conhecidas: React, Next.js, Prisma, Express, Tailwind, Django)
-- Configuração de ferramenta
-- Mudanças de versão ou deprecations
-- Setup instructions
-- CLI tool usage
-- **Sempre verificar contra docs atualizadas**, não confiar em training data pra detalhes de API
 
 **Diferença de `learn--code-teacher`:** `code-teacher` explica **código existente** (fluxo, design decisions). `context7-docs` busca **documentação oficial atualizada** pra qualquer tech (mais rápido pra lookup puro).
 
@@ -689,7 +676,13 @@ Nem toda skill de plugin pode virar pasta sem fork (genjutsu, e os oficiais Anth
 
 **Atenção:** Esta skill é para **extrair specs de código existente**, não para documentos textuais.
 
-### tools-- → Ferramentas & Exploração
+================================================================================
+
+## Ferramentas & Exploração
+
+> Skills pra explorar codebase, criar gráficos de conhecimento, melhorar consumo de tokens, navegação e otimizar fluxo de trabalho e desenvolvimento.
+
+### tools-- → Ferramentas
 
 ### `tools--caveman` Sistema de compressão de output
 **O que é:** Modo ultra-comprimido — reduz output em ~65% usando linguagem caveman enquanto preserva precisão técnica completa.
@@ -831,8 +824,6 @@ Nem toda skill de plugin pode virar pasta sem fork (genjutsu, e os oficiais Anth
 ### `tools--context7-cli` e `tools--context7-mcp`
 **O que é:** Ferramentas CLI e MCP do Context7 pra fetch de documentação atualizada e gerenciamento de skills.
 
-**Fonte:** [`upstash/context7`](https://github.com/upstash/context7) — instaladas globalmente em `~/.claude/skills/tools--context7-*/SKILL.md`
-
 **`tools--context7-cli` — ctx7 CLI:**
 - Fetch de docs versionadas pra qualquer biblioteca (resolve library ID → query docs)
 - Gerenciar skills (install/search/suggest/list/remove/generate)
@@ -904,9 +895,9 @@ tools--graphify <caminho> --no-viz                       # JSON + report, pula v
 
 **Sinergia com:** `learn--project-mentor` (understand project structure) + `learn--spec-miner` (reverse-engineer code) + `dev--code-reviewer` (entender impacto arquitetural de mudanças)
 
----
+================================================================================
 
-## Automação
+## Automação & Criação de Workflows
 
 > Skills pra orquestração de workflows, integração de APIs e automação de processos com n8n.
 
@@ -1120,11 +1111,11 @@ tools--graphify <caminho> --no-viz                       # JSON + report, pula v
 
 **Quando usar:** quando uma capacidade precisa existir como tool MCP e não há ferramenta nativa suficiente.
 
----
+================================================================================
 
-## Marketing & Produto
+## Produto
 
-> Skills pra definição de produto, discovery, roadmap, feature design, marketing e growth.
+> Skills pra definição de produto, discovery, roadmap, feature design e validação de ideais.
 
 ### product-- → Produto & Análise
 
@@ -1180,10 +1171,34 @@ tools--graphify <caminho> --no-viz                       # JSON + report, pula v
 
 **Diferença de `superpowers:writing-plans`:** `writing-plans` planeja **implementação técnica** de software. `product--project-planner` planeja **projetos gerais** (não técnicos).
 
----
+================================================================================
 
+## Marketing
 
-### Skills Oficiais Anthropic (Superpowers)
+> Skills pra marketing, conceitos e estratégias e growth de produto.
+
+### marketing-- → Marketing & Growth
+
+> 49 skills de marketing e crescimento (Corey Haines). Padronizadas com prefixo `marketing--*` (domínio especializado separado de `product--`).
+
+**Cobertura (algumas das principais):**
+- **SEO:** seo-audit, ai-seo, schema, programmatic-seo, site-architecture
+- **Paid Ads:** ads, ad-creative, attribution, analytics, aso (App Store)
+- **Copy:** copywriting, copy-editing, cold-email, emails, sms, social
+- **Conversion:** cro (conversion-rate-optimization), paywalls, popups, pricing, offers
+- **Content:** content-strategy, free-tools, image, video, schema
+- **Growth:** ab-testing, launch, product-marketing, referrals, onboarding, churn-prevention, lead-magnets
+- **Research:** customer-research, competitor-profiling, competitors
+- **Revenue:** revops, sales-enablement, public-relations, influencer-marketing
+- **Misc:** community-marketing, co-marketing, marketing-council, marketing-ideas, marketing-loops, marketing-psychology, directory-submissions, prospecting
+
+**Quando usar:** qualquer tarefa de marketing — from brand strategy (marketing-plan) até execution (copywriting, ads, analytics, revops).
+
+**Nota:** skills são altamente especializadas — referem-se umas às outras pra coordenação (e.g., copywriting remete pra emails pra cold-email copy vs website copy).
+
+================================================================================
+
+## Skills Oficiais Anthropic (Superpowers)
 
 > Ficam em `~/.claude/plugins/cache/claude-plugins-official/superpowers/`
 > **Não editar.** São atualizadas automaticamente pelo sistema de plugins.
@@ -1213,32 +1228,15 @@ tools--graphify <caminho> --no-viz                       # JSON + report, pula v
 | `skill-creator:skill-creator` | Skill | Criar, editar, testar e otimizar novas skills |
 | `code-simplifier` | Agente | Simplifica e refina código recém-modificado automaticamente |
 
-### marketing-- → Marketing & Growth
+================================================================================
 
-> 49 skills de marketing e crescimento (Corey Haines). Padronizadas com prefixo `marketing--*` (domínio especializado separado de `product--`).
+## Plugins de Terceiros
 
-**Fonte:** [`coreyhaines31/marketingskills`](https://github.com/coreyhaines31/marketingskills)
-
-**Cobertura (algumas das principais):**
-- **SEO:** seo-audit, ai-seo, schema, programmatic-seo, site-architecture
-- **Paid Ads:** ads, ad-creative, attribution, analytics, aso (App Store)
-- **Copy:** copywriting, copy-editing, cold-email, emails, sms, social
-- **Conversion:** cro (conversion-rate-optimization), paywalls, popups, pricing, offers
-- **Content:** content-strategy, free-tools, image, video, schema
-- **Growth:** ab-testing, launch, product-marketing, referrals, onboarding, churn-prevention, lead-magnets
-- **Research:** customer-research, competitor-profiling, competitors
-- **Revenue:** revops, sales-enablement, public-relations, influencer-marketing
-- **Misc:** community-marketing, co-marketing, marketing-council, marketing-ideas, marketing-loops, marketing-psychology, directory-submissions, prospecting
-
-**Quando usar:** qualquer tarefa de marketing — from brand strategy (marketing-plan) até execution (copywriting, ads, analytics, revops).
-
-**Nota:** skills são altamente especializadas — referem-se umas às outras pra coordenação (e.g., copywriting remete pra emails pra cold-email copy vs website copy).
+> Instalados via marketplace de plugin (`claude plugin marketplace add` + `claude plugin install`), não por cópia manual em `~/.claude/skills/`. Ficam em `~/.claude/plugins/cache/<marketplace>/`, atualizados pelo próprio sistema de plugins.
 
 ### composio-- → Suites de Utilidade Geral
 
 > 27 skills genéricas de utilidade (Composio HQ) — design, content, dev tooling, integrations, research. **NÃO são ferramentas Composio reais**, mas skills de propósito geral que pertencem a um domínio próprio, fora de `product--`, `dev--`, etc. Padronizadas com prefixo único `composio--*` pra evitar poluição de categorias de engenharia.
-
-**Fonte:** [`ComposioHQ/awesome-claude-skills`](https://github.com/ComposioHQ/awesome-claude-skills)
 
 | Tipo | Skills |
 |---|---|
@@ -1251,14 +1249,10 @@ tools--graphify <caminho> --no-viz                       # JSON + report, pula v
 
 **Padrão de categorização:** Estas são skills **GENÉRICAS e AGNÓSTICAS** (não se especializam em domínio como marketing, dev, data — são utilitários). Por isso ficam em categoria própria `composio--*`, não espalhadas por `dev--composio-*`, `product--composio-*`, etc.
 
-### Plugins de Terceiros
-
-> Instalados via marketplace de plugin (`claude plugin marketplace add` + `claude plugin install`), não por cópia manual em `~/.claude/skills/`. Ficam em `~/.claude/plugins/cache/<marketplace>/`, atualizados pelo próprio sistema de plugins.
+---
 
 ### `genjutsu:cast` e `genjutsu:paint`
 **O que é:** Plugin de creative coding para motion design, micro-interações e sistemas visuais — cobre Web (React/Vue/Svelte, GSAP, Framer Motion, CSS nativo, Three.js, Canvas generativo), Android (Jetpack Compose, Compose Multiplatform) e Apple (SwiftUI iOS/macOS).
-
-**Fonte:** [`AThevon/genjutsu`](https://github.com/AThevon/genjutsu) — instalado via `claude plugin marketplace add https://github.com/AThevon/genjutsu.git` + `claude plugin install genjutsu@genjutsu`.
 
 **Estrutura:** dois orquestradores (`cast`, `paint`) carregam dinamicamente 15 sub-skills internas em `_jutsu/` (nunca invocadas diretamente) conforme stack detectado e escopo do pedido. Resolução de caminho via `${CLAUDE_PLUGIN_ROOT}` — por isso instalado como plugin real, não copiado manualmente como `tools--graphify`/`tools--caveman`.
 
@@ -1286,8 +1280,6 @@ tools--graphify <caminho> --no-viz                       # JSON + report, pula v
 ### `gsap-skills:gsap-*` (8 skills)
 **O que é:** Skills oficiais GreenSock — API GSAP completa: core, timelines, ScrollTrigger, plugins, React, outros frameworks, performance e utils.
 
-**Fonte:** [`greensock/gsap-skills`](https://github.com/greensock/gsap-skills) — instalado via `claude plugin marketplace add https://github.com/greensock/gsap-skills.git` + `claude plugin install gsap-skills@gsap-skills`.
-
 | Skill | Foco |
 |---|---|
 | `gsap-core` | `gsap.to/from/fromTo`, easing, duration, stagger, defaults, `matchMedia()` (responsivo/reduced-motion) |
@@ -1309,8 +1301,6 @@ tools--graphify <caminho> --no-viz                       # JSON + report, pula v
 
 ### `mattpocock-skills:*` (22 skills)
 **O que é:** Plugin oficial de Matt Pocock — engineering workflows reais: TDD, spec-to-code, ticket triaging, code review, domain modeling, grilling/debugging, prototyping e research. Não é vibe coding — é disciplina estruturada.
-
-**Fonte:** [`mattpocock/skills`](https://github.com/mattpocock/skills) — instalado via `claude plugin marketplace add https://github.com/mattpocock/skills.git` + `claude plugin install mattpocock-skills@mattpocock`.
 
 | Skill | Foco |
 |---|---|
@@ -1343,34 +1333,7 @@ tools--graphify <caminho> --no-viz                       # JSON + report, pula v
 
 **Sinergia com:** `product--feature-forge` (from user story) → `mattpocock:to-spec` → `mattpocock:to-tickets` → `mattpocock:tdd` → `dev--test-master` + `mattpocock:code-review` → PR + `mattpocock:handoff`
 
----
-
-## Ferramentas Per-Project (não instaladas globalmente)
-
-> Skills que dependem de um app/scaffold companion rodando dentro do projeto (dev server, player, banco de arquivos específico). Não fazem sentido em `~/.claude/skills/` porque a skill sozinha, sem o app companion, não funciona — instalar globalmente criaria uma skill que ativa mas quebra na hora de executar.
-
-### `text-to-lottie`
-**O que é:** Framework pra gerar animações Lottie/Bodymovin JSON production-ready com verificação ao vivo num player Skia Skottie local (Vite + React).
-
-**Fonte:** [`diffusionstudio/lottie`](https://github.com/diffusionstudio/lottie)
-
-**Por que não é skill global:** a skill assume a existência de "the official player project" — um app Vite/React que o próprio repo é. Cenas são lidas/escritas em `public/projects/<projeto>/<scene-N>/lottie.json` dentro desse app, com dev server rodando pra preview live (`?frame=N`). Sem esse scaffold, a skill não tem onde escrever nem como verificar o resultado.
-
-**Como usar quando precisar:** dentro do projeto específico que vai gerar Lottie (não neste repo de skills globais), rodar:
-```bash
-npx skills add diffusionstudio/lottie
-```
-Isso instala a skill `text-to-lottie` e o player app naquele projeto. Depois pedir ao agente pra gerar a animação — ele resolve o SVG/dados de entrada, escreve o JSON na cena e valida no player.
-
-**Responsabilidades (quando ativa num projeto):**
-- Roteamento por tipo de pedido (logo, tipografia, lower-third, loader/ícone, microinteração, diagrama técnico, dados/stats, promo, efeitos visuais) pra referência específica
-- Defaults de design restritivo ("premium = subtrair, não adicionar" — zero chrome/card/borda por padrão)
-- Regras de cena: slots editáveis, `controls.json`, texto nativo Lottie com fonte embutida, easing não-linear obrigatório
-- Verificação: valida JSON, roda dev server, inspeciona frames exatos antes de finalizar
-
-**Sinergia com:** `frontend--motion-design` (timing/easing/princípios que fundamentam a animação antes de virar JSON)
-
----
+================================================================================
 
 ## Fluxos de Sinergia
 
