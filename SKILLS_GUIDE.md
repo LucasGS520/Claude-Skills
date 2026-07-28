@@ -8,22 +8,24 @@
 
 ## Sumário
 
+### Introdução
 - [Como as Skills Funcionam](#como-as-skills-funcionam)
-- [ai-- → IA & Agentes](#ai----ia--agentes)
-- [data-- → Análise & Dados](#data----análise--dados)
-- [arch-- → Arquitetura & Infraestrutura](#arch----arquitetura--infraestrutura)
-- [db-- → Banco de Dados](#db----banco-de-dados)
-- [dev-- → Qualidade & Processo](#dev----qualidade--processo)
-- [frontend-- → Frontend & UI](#frontend----frontend--ui)
-- [learn-- → Aprendizado & Descoberta](#learn----aprendizado--descoberta)
-- [tools-- → Ferramentas & Exploração](#tools----ferramentas--exploração)
-- [n8n-- → Automação N8N](#n8n----automação-n8n)
-- [product-- → Produto & Análise](#product----produto--análise)
-- [marketing-- → Marketing & Growth](#marketing----marketing--growth)
-- [composio-- → Suites de Utilidade Geral](#composio----suites-de-utilidade-geral)
-- [Skills Oficiais Anthropic (Superpowers)](#skills-oficiais-anthropic-superpowers)
-- [Plugins de Terceiros](#plugins-de-terceiros)
-- [Ferramentas Per-Project (não instaladas globalmente)](#ferramentas-per-project-não-instaladas-globalmente)
+- [Setup em Máquina Nova](#setup-em-máquina-nova)
+
+### Blocos Temáticos
+- [Agentes IA & LLMs](#agentes-ia--llms)
+- [Desenvolvimento & Qualidade](#desenvolvimento--qualidade)
+- [Arquitetura & Infraestrutura](#arquitetura--infraestrutura)
+- [Banco de Dados](#banco-de-dados)
+- [Frontend & Design](#frontend--design)
+- [Análise & Dados](#análise--dados)
+- [Automação](#automação)
+- [Marketing & Produto](#marketing--produto)
+- [Aprendizado & Exploração](#aprendizado--exploração)
+- [Skills Oficiais & Plugins](#skills-oficiais--plugins)
+- [Ferramentas Per-Project](#ferramentas-per-project-não-instaladas-globalmente)
+
+### Referência
 - [Fluxos de Sinergia](#fluxos-de-sinergia)
 - [Referência Rápida](#referência-rápida)
 
@@ -81,7 +83,11 @@ Nem toda skill de plugin pode virar pasta sem fork (genjutsu, e os oficiais Anth
 
 ---
 
-## ai-- → IA & Agentes
+## Agentes IA & LLMs
+
+> Skills pra criar, arquitetar e otimizar agentes, sistemas multi-agente, RAG e prompts de LLMs.
+
+### ai-- → IA & Agentes
 
 ### `ai--agno` Fonte idiomática oficial
 **O que é:** Skill oficial do framework Agno — referência canônica para padrões idiomáticos, APIs e boas práticas ao construir agentes, times, workflows e integrações MCP com o Agno SDK.
@@ -177,7 +183,11 @@ Nem toda skill de plugin pode virar pasta sem fork (genjutsu, e os oficiais Anth
 
 ---
 
-## data-- → Análise & Dados
+## Análise & Dados
+
+> Skills pra manipular, explorar, analisar dados e transformar em narrativas e insights.
+
+### data-- → Análise & Dados
 
 > Diferença de `db--`: `data--` é sobre **análise, manipulação e narrativa de dados** (pandas, relatórios, insights). `db--` é sobre **banco de dados** (SQL, schema, performance de queries).
 
@@ -210,7 +220,11 @@ Nem toda skill de plugin pode virar pasta sem fork (genjutsu, e os oficiais Anth
 
 ---
 
-## arch-- → Arquitetura & Infraestrutura
+## Arquitetura & Infraestrutura
+
+> Skills pra design de APIs, arquitetura de sistemas, DevOps, monitoring, otimização e automação de browser.
+
+### arch-- → Arquitetura & Infraestrutura
 
 ### `arch--architecture-designer`
 **O que é:** Especialista em design de arquitetura e estrura de sistemas de software de alto nível.
@@ -312,9 +326,7 @@ Nem toda skill de plugin pode virar pasta sem fork (genjutsu, e os oficiais Anth
 
 **Sinergia com:** `arch--devops-engineer` (infra e deploy) + `dev--debugging-wizard` (investigação de problemas em produção).
 
----
-
-## db-- → Banco de Dados
+### db-- → Banco de Dados
 
 ### `db--postgres-pro`
 **O que é:** Especialista em PostgreSQL avançado com foco em features específicas do Postgres.
@@ -360,7 +372,11 @@ Nem toda skill de plugin pode virar pasta sem fork (genjutsu, e os oficiais Anth
 
 ---
 
-## dev-- → Qualidade & Processo
+## Desenvolvimento & Qualidade
+
+> Skills pra escrever, revisar, testar, refatorar, debugar e securizar código — toda cadeia de qualidade.
+
+### dev-- → Qualidade & Processo
 
 ### `dev--python-pro`
 **O que é:** Especialista em Python 3.11+ moderno com foco em qualidade, type safety e práticas de engenharia robustas.
@@ -496,7 +512,11 @@ Nem toda skill de plugin pode virar pasta sem fork (genjutsu, e os oficiais Anth
 
 ---
 
-## frontend-- → Frontend & UI
+## Frontend & Design
+
+> Skills pra UI/UX, design visual, motion, animações, Three.js e design systems — tudo front-end.
+
+### frontend-- → Frontend & UI
 
 ### `frontend--typescript-pro`
 **O que é:** Especialista em TypeScript avançado — além do básico de tipos.
@@ -601,7 +621,11 @@ Nem toda skill de plugin pode virar pasta sem fork (genjutsu, e os oficiais Anth
 
 ---
 
-## learn-- → Aprendizado & Descoberta
+## Aprendizado & Exploração
+
+> Skills pra aprender libs externas, explorar codebase, criar gráficos de conhecimento e entender código.
+
+### learn-- → Aprendizado & Descoberta
 
 ### `learn--project-mentor`
 **O que é:** Guia de onboarding para qualquer repositório externo.
@@ -665,9 +689,7 @@ Nem toda skill de plugin pode virar pasta sem fork (genjutsu, e os oficiais Anth
 
 **Atenção:** Esta skill é para **extrair specs de código existente**, não para documentos textuais.
 
----
-
-## tools-- → Ferramentas & Exploração
+### tools-- → Ferramentas & Exploração
 
 ### `tools--caveman` Sistema de compressão de output
 **O que é:** Modo ultra-comprimido — reduz output em ~65% usando linguagem caveman enquanto preserva precisão técnica completa.
@@ -884,7 +906,11 @@ tools--graphify <caminho> --no-viz                       # JSON + report, pula v
 
 ---
 
-## n8n-- → Automação N8N
+## Automação
+
+> Skills pra orquestração de workflows, integração de APIs e automação de processos com n8n.
+
+### n8n-- → Automação N8N
 
 > Skills oficiais do n8n — fonte: [`n8n-io/skills`](https://github.com/n8n-io/skills). **Regra central:** invocar a skill correspondente **antes** de qualquer ação no n8n — o MCP do n8n evolui mais rápido que o training cutoff de qualquer modelo.
 
@@ -1096,7 +1122,11 @@ tools--graphify <caminho> --no-viz                       # JSON + report, pula v
 
 ---
 
-## product-- → Produto & Análise
+## Marketing & Produto
+
+> Skills pra definição de produto, discovery, roadmap, feature design, marketing e growth.
+
+### product-- → Produto & Análise
 
 ### `product--product-discovery`
 **O que é:** Validador de oportunidades de produto antes de commitar recursos.
@@ -1153,7 +1183,7 @@ tools--graphify <caminho> --no-viz                       # JSON + report, pula v
 ---
 
 
-## Skills Oficiais Anthropic (Superpowers)
+### Skills Oficiais Anthropic (Superpowers)
 
 > Ficam em `~/.claude/plugins/cache/claude-plugins-official/superpowers/`
 > **Não editar.** São atualizadas automaticamente pelo sistema de plugins.
@@ -1183,9 +1213,7 @@ tools--graphify <caminho> --no-viz                       # JSON + report, pula v
 | `skill-creator:skill-creator` | Skill | Criar, editar, testar e otimizar novas skills |
 | `code-simplifier` | Agente | Simplifica e refina código recém-modificado automaticamente |
 
----
-
-## marketing-- → Marketing & Growth
+### marketing-- → Marketing & Growth
 
 > 49 skills de marketing e crescimento (Corey Haines). Padronizadas com prefixo `marketing--*` (domínio especializado separado de `product--`).
 
@@ -1206,9 +1234,7 @@ tools--graphify <caminho> --no-viz                       # JSON + report, pula v
 
 **Nota:** skills são altamente especializadas — referem-se umas às outras pra coordenação (e.g., copywriting remete pra emails pra cold-email copy vs website copy).
 
----
-
-## composio-- → Suites de Utilidade Geral
+### composio-- → Suites de Utilidade Geral
 
 > 27 skills genéricas de utilidade (Composio HQ) — design, content, dev tooling, integrations, research. **NÃO são ferramentas Composio reais**, mas skills de propósito geral que pertencem a um domínio próprio, fora de `product--`, `dev--`, etc. Padronizadas com prefixo único `composio--*` pra evitar poluição de categorias de engenharia.
 
@@ -1225,9 +1251,7 @@ tools--graphify <caminho> --no-viz                       # JSON + report, pula v
 
 **Padrão de categorização:** Estas são skills **GENÉRICAS e AGNÓSTICAS** (não se especializam em domínio como marketing, dev, data — são utilitários). Por isso ficam em categoria própria `composio--*`, não espalhadas por `dev--composio-*`, `product--composio-*`, etc.
 
----
-
-## Plugins de Terceiros
+### Plugins de Terceiros
 
 > Instalados via marketplace de plugin (`claude plugin marketplace add` + `claude plugin install`), não por cópia manual em `~/.claude/skills/`. Ficam em `~/.claude/plugins/cache/<marketplace>/`, atualizados pelo próprio sistema de plugins.
 
