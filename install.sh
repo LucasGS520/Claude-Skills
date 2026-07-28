@@ -7,62 +7,60 @@ REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SKILLS_SRC="$REPO_ROOT/.claude/skills"
 SKILLS_DST="$HOME/.claude/skills"
 MANIFEST="$REPO_ROOT/plugins.json"
-TMP_DIR="$(mktemp -d)"
-trap 'rm -rf "$TMP_DIR"' EXIT
 
 echo "== Folder-based skills =="
 mkdir -p "$SKILLS_DST"
 if [ -d "$SKILLS_SRC" ]; then
   for dir in "$SKILLS_SRC"/*/; do
     name="$(basename "$dir")"
-    # --exclude drops stray embedded-git backups (e.g. dev--security-auditor)
-    # that ship with permission-locked pack files and aren't real skill content.
-    tar --exclude='.git.embedded-backup' -cf - -C "$SKILLS_SRC" "$name" | tar -xf - -C "$SKILLS_DST"
+    cp -r "$dir" "$SKILLS_DST/"
     echo "  copied $name"
   done
 else
   echo "  no $SKILLS_SRC found, skipping"
 fi
 
-python3 - "$MANIFEST" "$TMP_DIR" <<'PYEOF'
-import json, sys
-manifest, tmp_dir = sys.argv[1], sys.argv[2]
-with open(manifest) as f:
-    data = json.load(f)
-with open(f"{tmp_dir}/marketplaces.tsv", "w", newline="\n") as f:
-    for m in data["marketplaces"]:
-        f.write(f"{m['name']}\t{m['url']}\n")
-with open(f"{tmp_dir}/plugins.txt", "w", newline="\n") as f:
-    for p in data["plugins"]:
-        f.write(f"{p}\n")
-PYEOF
+echo
+echo "== Plugin marketplaces & plugins =="
+if [ -f "$MANIFEST" ]; then
+  python3 - "$MANIFEST" <<'PYTHON'
+import json
+import subprocess
+import sys
+
+manifest_path = sys.argv[1]
+with open(manifest_path) as f:
+  data = json.load(f)
+
+# Add marketplaces
+for mp in data.get("marketplaces", []):
+  name, url = mp["name"], mp["url"]
+  result = subprocess.run(
+    ["claude", "plugin", "marketplace", "add", url],
+    capture_output=True, text=True
+  )
+  if result.returncode == 0 or "already" in result.stderr.lower():
+    print(f"  marketplace {name} ready")
+  else:
+    print(f"  error adding {name}: {result.stderr}", file=sys.stderr)
+    sys.exit(1)
+
+# Install plugins
+for plugin in data.get("plugins", []):
+  result = subprocess.run(
+    ["claude", "plugin", "install", plugin],
+    capture_output=True, text=True
+  )
+  if result.returncode == 0 or "already" in result.stderr.lower():
+    print(f"  installed {plugin}")
+  else:
+    print(f"  error installing {plugin}: {result.stderr}", file=sys.stderr)
+    sys.exit(1)
+PYTHON
+else
+  echo "  no $MANIFEST found, skipping"
+fi
 
 echo
-echo "== Plugin marketplaces =="
-mapfile -t MARKETPLACE_LINES < "$TMP_DIR/marketplaces.tsv"
-for line in "${MARKETPLACE_LINES[@]}"; do
-  name="${line%%$'\t'*}"
-  url="${line#*$'\t'}"
-  if claude plugin marketplace list 2>/dev/null | grep -qi "^  ❯ $name\$"; then
-    echo "  $name already added, skipping"
-  else
-    echo "  adding $name ($url)"
-    claude plugin marketplace add "$url" </dev/null
-  fi
-done
-
-echo
-echo "== Refreshing marketplace cache =="
-claude plugin marketplace update </dev/null
-
-echo
-echo "== Plugins =="
-mapfile -t PLUGIN_LINES < "$TMP_DIR/plugins.txt"
-for plugin in "${PLUGIN_LINES[@]}"; do
-  [ -z "$plugin" ] && continue
-  echo "  installing $plugin"
-  claude plugin install "$plugin" </dev/null || echo "  (failed or already installed: $plugin)"
-done
-
-echo
-echo "Done. Restart Claude Code session to pick up new skills/plugins."
+echo "== Done =="
+echo "Skills + plugins installed. Run 'claude' to verify."
