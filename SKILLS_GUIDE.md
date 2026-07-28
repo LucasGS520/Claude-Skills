@@ -19,6 +19,8 @@
 - [tools-- → Ferramentas & Exploração](#tools----ferramentas--exploração)
 - [n8n-- → Automação N8N](#n8n----automação-n8n)
 - [product-- → Produto & Análise](#product----produto--análise)
+- [marketing-- → Marketing & Growth](#marketing----marketing--growth)
+- [composio-- → Suites de Utilidade Geral](#composio----suites-de-utilidade-geral)
 - [Skills Oficiais Anthropic (Superpowers)](#skills-oficiais-anthropic-superpowers)
 - [Plugins de Terceiros](#plugins-de-terceiros)
 - [Ferramentas Per-Project (não instaladas globalmente)](#ferramentas-per-project-não-instaladas-globalmente)
@@ -260,6 +262,38 @@ Nem toda skill de plugin pode virar pasta sem fork (genjutsu, e os oficiais Anth
 - GitOps e automação de releases
 - Runbooks de incidente e operações
 - Configuração de ambientes (dev/staging/prod)
+
+---
+
+### `arch--browserbase-*` (16 skills)
+**O que é:** Framework completo de automação de browser com Browserbase — planejamento, implementação, tracing, testes e deploy cloud.
+
+**Fonte:** [`browserbase/skills`](https://github.com/browserbase/skills) — instaladas globalmente em `~/.claude/skills/arch--browserbase-*/SKILL.md`
+
+| Skill | Foco |
+|---|---|
+| `arch--browserbase-browser` | Automate web browser (CLI, CAPTCHA, proxies, Browserbase Identity, Verified browsers) |
+| `arch--browserbase-functions` | Deploy browser automation em cloud (serverless, cron, webhooks) |
+| `arch--browserbase-safe-browser` | Constrained-browser agents com domain allowlist + CDP (Agent SDK) |
+| `arch--browserbase-autobrowse` | Self-improving automation loop (task → trace → improve → retry) |
+| `arch--browserbase-browser-trace` | DevTools CDP trace capture, per-page buckets, session debug |
+| `arch--browserbase-browser-to-api` | Converte HTTP traffic (trace) em OpenAPI 3.1 spec |
+| `arch--browserbase-fetch` | Lightweight HTTP (sem browser full) — HTML/JSON, status, redirects |
+| `arch--browserbase-search` | Web search (sem browser) — URLs, titles, metadata |
+| `arch--browserbase-ui-test` | Adversarial UI testing (git diffs, accessibility, responsive, UX heuristics) |
+| `arch--browserbase-browser-use-to-stagehand` | Migrar browser-use (Python) → Stagehand (TypeScript) |
+| `arch--browserbase-agent-experience` | Audit DX de SDK/docs/skill — subagents descobrem, instalam, testam (A-F grade) |
+| `arch--browserbase-company-research` | Company discovery + ICP research (Plan→Research→Synthesize, scored report) |
+| `arch--browserbase-competitor-analysis` | Competitor intel — 4-lane deep research (marketing, signals, benchmarks, matrix) |
+| `arch--browserbase-event-prospecting` | Lead prospecting em conferências — extrai speakers, filtra ICP, deep-research |
+| `arch--browserbase-cookie-sync` | Sincronizar cookies locais (Chrome) → Browserbase session (auth) |
+| `arch--browserbase-webmcp-gen` | Author WebMCP init scripts (site-specific tools via Stagehand) |
+
+**Quando usar:** qualquer tarefa de browser automation — desde interação simples (fetch, search) até automação complex (autobrowse self-improving, tracing, deploy cloud), pesquisa competitiva e testes.
+
+**Diferença de `genjutsu:cast` (web):** `genjutsu` cobre **motion/micro-interação** dentro de uma UI já existente (CSS/JS). `browserbase-*` cobre **browser automation + data extraction** — clicar, navegar, scrape, testar, deploy.
+
+**Sinergia com:** `arch--devops-engineer` (deploy cloud functions) + `dev--test-master` (UI testing strategy) + `product--feature-forge` (automate QA flows)
 
 ---
 
@@ -580,6 +614,31 @@ Nem toda skill de plugin pode virar pasta sem fork (genjutsu, e os oficiais Anth
 
 ---
 
+### `learn--context7-docs`
+**O que é:** Fetch de documentação atualizada + exemplos de código pra qualquer biblioteca, framework, SDK ou ferramenta — prioriza docs versionadas sobre training data.
+
+**Fonte:** [`upstash/context7`](https://github.com/upstash/context7) — instalada globalmente em `~/.claude/skills/learn--context7-docs/SKILL.md`
+
+**Responsabilidades:**
+- Resolver nome da biblioteca pra ID no registry Context7
+- Buscar docs versionadas (ignora training data potencialmente outdated)
+- Fetch de exemplos de código, API signatures, config options
+- Suportar migration guides entre versões
+
+**Quando usar:**
+- Perguntas sobre API (mesmo libs bem-conhecidas: React, Next.js, Prisma, Express, Tailwind, Django)
+- Configuração de ferramenta
+- Mudanças de versão ou deprecations
+- Setup instructions
+- CLI tool usage
+- **Sempre verificar contra docs atualizadas**, não confiar em training data pra detalhes de API
+
+**Diferença de `learn--code-teacher`:** `code-teacher` explica **código existente** (fluxo, design decisions). `context7-docs` busca **documentação oficial atualizada** pra qualquer tech (mais rápido pra lookup puro).
+
+**Sinergia com:** `tools--context7-cli`/`tools--context7-mcp` (como a ferramenta é usada) + qualquer skill de implementação quando verificar API
+
+---
+
 ### `learn--code-teacher`
 **O que é:** Professor interativo de código — explica o que o código faz e por quê.
 
@@ -744,6 +803,28 @@ Nem toda skill de plugin pode virar pasta sem fork (genjutsu, e os oficiais Anth
 - Auditar impacto real do modo Caveman
 
 **Status GitHub:** local-only por enquanto — não aparece em `origin/main`.
+
+---
+
+### `tools--context7-cli` e `tools--context7-mcp`
+**O que é:** Ferramentas CLI e MCP do Context7 pra fetch de documentação atualizada e gerenciamento de skills.
+
+**Fonte:** [`upstash/context7`](https://github.com/upstash/context7) — instaladas globalmente em `~/.claude/skills/tools--context7-*/SKILL.md`
+
+**`tools--context7-cli` — ctx7 CLI:**
+- Fetch de docs versionadas pra qualquer biblioteca (resolve library ID → query docs)
+- Gerenciar skills (install/search/suggest/list/remove/generate)
+- Setup de Context7 MCP pra Claude Code/Cursor/OpenCode
+- Quando usar: documentação desatualizada, verificar API signatures, setup MCP
+
+**`tools--context7-mcp` — Context7 MCP Server:**
+- Protocol MCP pra integrar Context7 como ferramenta nativa do agente
+- Fetch docs, gerenciar skills, listar bibliotecas
+- Quando usar: setup MCP, usar context7 via MCP dentro do agente
+
+**Diferença de `learn--context7-docs`:** `context7-cli`/`context7-mcp` ensinam **como usar a ferramenta**. `context7-docs` é o workflow de **lookup de docs** pra qualquer biblioteca (mais alto nível, usa CLI internamente).
+
+**Sinergia com:** `learn--context7-docs` (workflow de lookup) + qualquer skill de implementação (quando precisa verificar API desatualizada)
 
 ---
 
@@ -1104,6 +1185,48 @@ tools--graphify <caminho> --no-viz                       # JSON + report, pula v
 
 ---
 
+## marketing-- → Marketing & Growth
+
+> 49 skills de marketing e crescimento (Corey Haines). Padronizadas com prefixo `marketing--*` (domínio especializado separado de `product--`).
+
+**Fonte:** [`coreyhaines31/marketingskills`](https://github.com/coreyhaines31/marketingskills)
+
+**Cobertura (algumas das principais):**
+- **SEO:** seo-audit, ai-seo, schema, programmatic-seo, site-architecture
+- **Paid Ads:** ads, ad-creative, attribution, analytics, aso (App Store)
+- **Copy:** copywriting, copy-editing, cold-email, emails, sms, social
+- **Conversion:** cro (conversion-rate-optimization), paywalls, popups, pricing, offers
+- **Content:** content-strategy, free-tools, image, video, schema
+- **Growth:** ab-testing, launch, product-marketing, referrals, onboarding, churn-prevention, lead-magnets
+- **Research:** customer-research, competitor-profiling, competitors
+- **Revenue:** revops, sales-enablement, public-relations, influencer-marketing
+- **Misc:** community-marketing, co-marketing, marketing-council, marketing-ideas, marketing-loops, marketing-psychology, directory-submissions, prospecting
+
+**Quando usar:** qualquer tarefa de marketing — from brand strategy (marketing-plan) até execution (copywriting, ads, analytics, revops).
+
+**Nota:** skills são altamente especializadas — referem-se umas às outras pra coordenação (e.g., copywriting remete pra emails pra cold-email copy vs website copy).
+
+---
+
+## composio-- → Suites de Utilidade Geral
+
+> 27 skills genéricas de utilidade (Composio HQ) — design, content, dev tooling, integrations, research. **NÃO são ferramentas Composio reais**, mas skills de propósito geral que pertencem a um domínio próprio, fora de `product--`, `dev--`, etc. Padronizadas com prefixo único `composio--*` pra evitar poluição de categorias de engenharia.
+
+**Fonte:** [`ComposioHQ/awesome-claude-skills`](https://github.com/ComposioHQ/awesome-claude-skills)
+
+| Tipo | Skills |
+|---|---|
+| **UI/Design** | artifacts-builder, brand-guidelines, canvas-design, theme-factory |
+| **Content/Writing** | content-research-writer, internal-comms, changelog-generator |
+| **Dev Tooling** | webapp-testing, langsmith-fetch, skill-creator, skill-share |
+| **Integrations** | connect, connect-apps (Gmail, Slack, GitHub, Notion, 1000+ services) |
+| **Data/Analysis** | lead-research-assistant, competitive-ads-extractor, developer-growth-analysis, meeting-insights-analyzer, twitter-algorithm-optimizer |
+| **Utilities** | video-downloader, image-enhancer, domain-name-brainstormer, file-organizer, raffle-winner-picker |
+
+**Padrão de categorização:** Estas são skills **GENÉRICAS e AGNÓSTICAS** (não se especializam em domínio como marketing, dev, data — são utilitários). Por isso ficam em categoria própria `composio--*`, não espalhadas por `dev--composio-*`, `product--composio-*`, etc.
+
+---
+
 ## Plugins de Terceiros
 
 > Instalados via marketplace de plugin (`claude plugin marketplace add` + `claude plugin install`), não por cópia manual em `~/.claude/skills/`. Ficam em `~/.claude/plugins/cache/<marketplace>/`, atualizados pelo próprio sistema de plugins.
@@ -1303,6 +1426,7 @@ dev--test-master          → testes do agente
 | Criar agente com Agno (único) | `ai--agno` → `ai--prompt-engineer` + `ai--agent-development` |
 | Criar time de agentes | `ai--multi-agent-architect` → `ai--agent-development`/`ai--agno` → `ai--prompt-engineer` |
 | Entender lib externa | `learn--project-mentor` |
+| Fetch docs atualizadas de qualquer lib | `learn--context7-docs` |
 | Entender trecho de código | `learn--code-teacher` |
 | Código sem documentação | `learn--spec-miner` |
 | Pergunta sobre codebase | `tools--graphify` (query/path/explain) |
@@ -1313,6 +1437,7 @@ dev--test-master          → testes do agente
 | Criar PR | `requesting-code-review` → `finishing-a-development-branch` |
 | Recebeu feedback de review | `receiving-code-review` |
 | Dados → relatório | `data--pandas-pro` → `data--storyteller` |
+| Browser automation / web scraping / UI test | `arch--browserbase-*` (skill específica pelo contexto) |
 | Deploy / Docker | `arch--devops-engineer` |
 | Monitoring / Observabilidade | `arch--monitoring-expert` |
 | Refatorar código ruim | `dev--code-refactoring` |
