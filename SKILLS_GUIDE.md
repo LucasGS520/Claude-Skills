@@ -1283,6 +1283,44 @@ tools--graphify <caminho> --no-viz                       # JSON + report, pula v
 
 ---
 
+### `mattpocock-skills:*` (22 skills)
+**O que é:** Plugin oficial de Matt Pocock — engineering workflows reais: TDD, spec-to-code, ticket triaging, code review, domain modeling, grilling/debugging, prototyping e research. Não é vibe coding — é disciplina estruturada.
+
+**Fonte:** [`mattpocock/skills`](https://github.com/mattpocock/skills) — instalado via `claude plugin marketplace add https://github.com/mattpocock/skills.git` + `claude plugin install mattpocock-skills@mattpocock`.
+
+| Skill | Foco |
+|---|---|
+| `to-spec` | Converter ticket/user story em spec técnica — decisions, trade-offs, edge cases |
+| `to-tickets` | Quebrar spec em tickets escalonados com AC/dependências — pronto pro sprint |
+| `tdd` | Test-driven development — red/green/refactor disciplinado |
+| `code-review` | Review estruturado: segurança, performance, clareza, testing, padrões |
+| `domain-modeling` | Mapear domain entities, bounded contexts, invariants, workflows |
+| `codebase-design` | Estrutura de arquivos, exports, camadas, modularização |
+| `grill-with-docs` | Investigação via docs/specs, sem ir pro código ainda |
+| `diagnosing-bugs` | Triagem sistemática — isolate, hypothesis, test, root cause |
+| `implement` | Guia de implementação step-by-step, evitando atalhos |
+| `prototype` | Prototipagem rápida — decisões técnicas antes de commitar |
+| `research` | Research estruturada, nota-taking, síntese |
+| `wayfinder` | Encontrar arquivos, funções, dependências — mapeamento de codebase |
+| `triage` | Triagem de issue/ticket — pergunta estruturada, claridade, prioridade |
+| `resolving-merge-conflicts` | Estratégia sistemática pra merge conflicts |
+| `grilling` | Deep questioning — clarify requirements, edge cases, trade-offs |
+| `grill-me` | Inverte — agente grill você pra validar seu design |
+| `ask-matt` | Perguntar diretamente a Matt Pocock sobre engenharia/skill |
+| `teach` | Explicar conceito técnico como se ensinasse um junior |
+| `setup-matt-pocock-skills` | Setup e troubleshooting dos skills |
+| `writing-great-skills` | Guidelines pra escrever suas próprias skills |
+| `improve-codebase-architecture` | Refactor arquitetural — antes de mexer em código |
+| `handoff` | Documentação e handoff — deixar codebase pronto pro próximo dev |
+
+**Pipeline oficial:** `to-spec` → `to-tickets` → `tdd` → `code-review` → `handoff` (pra trabalho em time). Ou `grill` → `prototype` → `research` (pra exploration).
+
+**Diferença de skills dev do repo:** `dev--code-reviewer` é um revisor de código agnóstico, genérico. `mattpocock-skills:code-review` é disciplina estruturada — segurança, performance, clareza, testing, padrões em ordem. Similar com debugging: `mattpocock:diagnosing-bugs` é triagem sistemática (isolate, hypothesis, test), não só "o que deu errado".
+
+**Sinergia com:** `product--feature-forge` (from user story) → `mattpocock:to-spec` → `mattpocock:to-tickets` → `mattpocock:tdd` → `dev--test-master` + `mattpocock:code-review` → PR + `mattpocock:handoff`
+
+---
+
 ## Ferramentas Per-Project (não instaladas globalmente)
 
 > Skills que dependem de um app/scaffold companion rodando dentro do projeto (dev server, player, banco de arquivos específico). Não fazem sentido em `~/.claude/skills/` porque a skill sozinha, sem o app companion, não funciona — instalar globalmente criaria uma skill que ativa mas quebra na hora de executar.
@@ -1451,6 +1489,19 @@ dev--test-master          → testes do agente
 | Ver uso real de tokens | `tools--caveman-stats` |
 | Planejar roadmap do projeto | `product--project-planner` |
 | Validar antes de construir | `product--product-discovery` |
+| Converter ticket em spec técnica | `mattpocock:to-spec` |
+| Quebrar spec em tickets com AC | `mattpocock:to-tickets` |
+| TDD disciplinado (red/green/refactor) | `mattpocock:tdd` |
+| Code review estruturado | `mattpocock:code-review` |
+| Mapear domain entities + bounded contexts | `mattpocock:domain-modeling` |
+| Triagem de bug sistemática | `mattpocock:diagnosing-bugs` |
+| Deep questioning antes de começar | `mattpocock:grilling` |
+| Prototipagem rápida | `mattpocock:prototype` |
+| Investigar codebase (via docs) | `mattpocock:grill-with-docs` |
+| Research estruturada | `mattpocock:research` |
+| Encontrar arquivo/função no projeto | `mattpocock:wayfinder` |
+| Merge conflicts | `mattpocock:resolving-merge-conflicts` |
+| Documentação de handoff | `mattpocock:handoff` |
 | Qualquer coisa com N8N | `n8n--using-skills` (roteia automaticamente) |
 | Novo workflow N8N | `n8n--workflow-lifecycle` → `n8n--node-configuration` |
 | Expressão N8N com erro | `n8n--expressions` |

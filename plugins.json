@@ -12,6 +12,10 @@
     {
       "name": "gsap-skills",
       "url": "https://github.com/greensock/gsap-skills.git"
+    },
+    {
+      "name": "mattpocock",
+      "url": "https://github.com/mattpocock/skills.git"
     }
   ],
   "plugins": [
@@ -22,6 +26,7 @@
     "code-review@claude-plugins-official",
     "caveman@caveman",
     "genjutsu@genjutsu",
-    "gsap-skills@gsap-skills"
+    "gsap-skills@gsap-skills",
+    "mattpocock-skills@mattpocock"
   ]
 }
